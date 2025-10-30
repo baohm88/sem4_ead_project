@@ -1,5 +1,6 @@
 package com.example.spring_boot_test.entity;
 
+import com.example.spring_boot_test.entity.helper.DishStatus;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -9,9 +10,9 @@ import lombok.NoArgsConstructor;
 
 import java.util.Date;
 
+@Data
 @Entity
 @Table(name = "dishes")
-@Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
@@ -21,14 +22,7 @@ public class Dish {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    // --- Many-to-One ---
-    // Dish là bên sở hữu quan hệ (chứa khóa ngoại)
-    @ManyToOne(fetch = FetchType.LAZY) // LAZY: chỉ load User khi thực sự cần đến
-    @JoinColumn(name = "category_id") // Tạo cột author_id trong bảng posts
-    @JsonBackReference
-    private Category category;
-
-    @Column(name = "name", nullable = false, length = 150, columnDefinition = "VARCHAR(150)")
+    @Column(nullable = false, name = "name", length = 150)
     private String name;
 
     @Column(name = "description", columnDefinition = "TEXT")
@@ -37,17 +31,24 @@ public class Dish {
     @Column(name = "image_url", columnDefinition = "TEXT")
     private String imageUrl;
 
-    @Column(name = "price", nullable = false, columnDefinition = "DECIMAL")
+    @Column(name ="price", nullable = false)
     private Double price;
 
-    @Column(name = "start_date", columnDefinition = "DATETIME")
+    @Column(name = "start_date", nullable = false)
+    @Temporal(TemporalType.TIMESTAMP)
     private Date startDate;
 
-    @Column(name = "last_modified_date", columnDefinition = "DATETIME")
+    @Column(name = "last_modified")
+    @Temporal(TemporalType.TIMESTAMP)
     private Date lastModifiedDate;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "status", length = 20, nullable = false, columnDefinition = "VARCHAR(20)")
-    private DishStatus status;
+    @Column(name = "status")
+    private DishStatus status;     // ⬅ dùng đúng enum ở package helper
+
+    @ManyToOne
+    @JoinColumn(name = "category_id")
+    @JsonBackReference
+    private Category category;
 }
 

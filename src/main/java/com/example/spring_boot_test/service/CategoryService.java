@@ -9,12 +9,10 @@ import java.util.List;
 
 @Service
 public class CategoryService {
-
     @Autowired
-    private CategoryRepository categoryRepository;
+    CategoryRepository categoryRepository;
 
     public List<Category> findAll() {
-        // bổ sung logic sau vào đây.
         return categoryRepository.findAll();
     }
 }

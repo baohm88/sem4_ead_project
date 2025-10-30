@@ -4,11 +4,8 @@ import com.example.spring_boot_test.entity.Category;
 import com.example.spring_boot_test.repository.CategoryRepository;
 import com.example.spring_boot_test.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -16,12 +13,11 @@ import java.util.List;
 @RestController
 @RequestMapping(path = "api/v1/categories")
 public class CategoryController {
-
     @Autowired
-    private CategoryService categoryService;
+    CategoryService categoryService;
 
     @RequestMapping(method = RequestMethod.GET)
-    public List<Category> getAll() {
+    public List<Category> getAllCategories() {
         List<Category> categories = categoryService.findAll();
         return categories;
     }
