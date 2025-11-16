@@ -146,7 +146,7 @@ public class WebCrawlerManager {
             
             // Trả về thẻ <title>
             return doc.title();
-        } catch (IOException e) {
+        } catch (IOException e) {\;
             // Xử lý lỗi nếu không kết nối được (404, timeout, etc.)
             return "Lỗi khi crawl '" + url + "': " + e.getMessage();
         }
