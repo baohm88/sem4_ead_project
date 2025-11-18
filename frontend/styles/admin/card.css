@@ -1,0 +1,11 @@
+/* ===== Card Component (Light) ===== */
+.card {
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: .75rem;
+    padding: 1rem;
+    box-shadow: 0 1px 1px rgba(0,0,0,0.02);
+}
+.card + .card { margin-top: 1rem; }
+
+/* Cho phép thừa kế thêm class màu sắc từ page (stat-*) */
