@@ -5,48 +5,69 @@ import { usePathname } from "next/navigation";
 import { useState } from "react";
 import "@/styles/admin/sidebar.css";
 
-import { MdDashboard, MdCategory, MdMenu, MdClose } from "react-icons/md";
+import {
+    MdDashboard,
+    MdCategory,
+    MdMenu,
+    MdClose,
+    MdChevronLeft,
+    MdChevronRight,
+} from "react-icons/md";
 
 export default function Sidebar() {
     const pathname = usePathname();
-    const [open, setOpen] = useState(false);
+
+    // mobile open
+    const [mobileOpen, setMobileOpen] = useState(false);
+
+    // desktop collapse
+    const [collapsed, setCollapsed] = useState(false);
 
     const navItems = [
         { name: "Dashboard", href: "/admin", icon: MdDashboard },
-        { name: "Categories", href: "/admin/categories", icon: MdCategory },
+        { name: "Categories", href: "/admin/categories/list", icon: MdCategory },
     ];
 
     return (
         <>
-            {/* Mobile Toggle */}
-            <button
-                className="sb-toggle"
-                onClick={() => setOpen(true)}
-                aria-label="Mở sidebar"
-            >
+            {/* Mobile button */}
+            <button className="sb-toggle" onClick={() => setMobileOpen(true)}>
                 <MdMenu size={24} />
             </button>
 
-            {/* Overlay (mobile) */}
-            {open && <div className="sb-overlay" onClick={() => setOpen(false)} aria-hidden="true" />}
+            {mobileOpen && (
+                <div className="sb-overlay" onClick={() => setMobileOpen(false)} />
+            )}
 
-            {/* Sidebar */}
             <aside
-                className={`sidebar ${open ? "is-open" : ""}`}
-                aria-label="Thanh điều hướng quản trị"
+                className={`sidebar ${mobileOpen ? "is-open" : ""} ${
+                    collapsed ? "is-collapsed" : ""
+                }`}
             >
                 <div className="sidebar-header">
-                    <h2 className="brand">AdminPanel</h2>
+                    <h2 className="brand">{collapsed ? "A" : "AdminPanel"}</h2>
+
                     <button
                         className="sb-close md-hidden"
-                        onClick={() => setOpen(false)}
-                        aria-label="Đóng sidebar"
+                        onClick={() => setMobileOpen(false)}
                     >
                         <MdClose size={24} />
                     </button>
+
+                    {/* Collapse btn desktop */}
+                    <button
+                        className="sb-collapse-btn lg-only"
+                        onClick={() => setCollapsed(!collapsed)}
+                    >
+                        {collapsed ? (
+                            <MdChevronRight size={22} />
+                        ) : (
+                            <MdChevronLeft size={22} />
+                        )}
+                    </button>
                 </div>
 
-                <nav className="sidebar-nav" role="navigation">
+                <nav className="sidebar-nav">
                     {navItems.map((item) => {
                         const Icon = item.icon;
                         const active = pathname.startsWith(item.href);
@@ -55,11 +76,14 @@ export default function Sidebar() {
                             <Link
                                 key={item.href}
                                 href={item.href}
-                                onClick={() => setOpen(false)}
                                 className={`sidebar-item ${active ? "is-active" : ""}`}
+                                onClick={() => setMobileOpen(false)}
                             >
-                                <Icon size={20} />
-                                <span>{item.name}</span>
+                                <div className="sidebar-icon">
+                                    <Icon size={22} />
+                                </div>
+
+                                {!collapsed && <span>{item.name}</span>}
                             </Link>
                         );
                     })}

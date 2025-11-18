@@ -1,0 +1,392 @@
+/* ============================================================
+   EDIT PAGE — NEON GLASS STYLE (ĐỒNG BỘ VỚI VIEW)
+============================================================ */
+
+/* Layout */
+.edit-wrap {
+    max-width: 1000px;
+    margin: 40px auto;
+    padding: 0 20px;
+    font-family: "Inter", sans-serif;
+    animation: fadeIn .35s ease;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(8px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+/* Header */
+.edit-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+}
+
+/* Title gradient giống VIEW */
+.edit-title {
+    font-size: 28px;
+    font-weight: 700;
+    background: linear-gradient(135deg, #3b82f6, #a855f7);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+/* ============================================================
+   BUTTONS — Y HỆT VIEW PAGE
+============================================================ */
+
+.edit-btn-back,
+.edit-btn-save,
+.edit-btn-delete {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+
+    padding: 10px 18px;
+    border-radius: 12px;
+    font-size: 15px;
+
+    background: rgba(255,255,255,0.55);
+    backdrop-filter: blur(10px);
+
+    border: 1px solid rgba(148,163,184,0.25);
+    color: #475569;
+
+    transition: transform .25s ease, box-shadow .25s ease, color .25s ease;
+}
+
+/* Hover glow */
+.edit-btn-back:hover,
+.edit-btn-save:hover,
+.edit-btn-delete:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 0 12px rgba(139,92,246,0.45);
+    color: #a78bfa;
+}
+
+/* Save = xanh */
+.edit-btn-save {
+    color: #fff !important;
+    background: linear-gradient(135deg, #3b82f6, #2563eb) !important;
+    border: none !important;
+}
+.edit-btn-save:hover {
+    box-shadow: 0 0 14px rgba(59,130,246,0.55);
+}
+
+/* Delete = đỏ */
+.edit-btn-delete {
+    color: #fff !important;
+    background: linear-gradient(135deg, #ef4444, #dc2626) !important;
+    border: none !important;
+}
+.edit-btn-delete:hover {
+    box-shadow: 0 0 14px rgba(239,68,68,0.55);
+}
+
+/* ============================================================
+   CARD GLASS — GIỐNG VIEW PAGE
+============================================================ */
+
+.edit-card {
+    padding: 22px;
+    border-radius: 16px;
+
+    background: rgba(255,255,255,0.55);
+    backdrop-filter: blur(14px);
+
+    border: 1px solid rgba(148,163,184,0.25);
+
+    box-shadow:
+            0 4px 16px rgba(0,0,0,0.05),
+            0 2px 6px rgba(0,0,0,0.06);
+}
+
+/* ============================================================
+   FORM
+============================================================ */
+
+.edit-form {
+    display: flex;
+    flex-direction: column;
+    gap: 22px;
+}
+
+.edit-field {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.edit-field label {
+    font-size: 14px;
+    font-weight: 600;
+    color: #64748b;
+}
+
+/* Input glass */
+.edit-input {
+    padding: 14px 16px;
+    border-radius: 12px;
+
+    background: rgba(255,255,255,0.4);
+    border: 1px solid rgba(148,163,184,0.25);
+    backdrop-filter: blur(8px);
+
+    font-size: 15px;
+    transition: .25s ease;
+}
+
+.edit-input:focus {
+    outline: none;
+    border-color: #3b82f6;
+    box-shadow: 0 0 10px rgba(59,130,246,0.35);
+}
+
+/* Actions */
+.edit-actions {
+    display: flex;
+    gap: 14px;
+    flex-wrap: wrap;
+}
+
+/* ============================================================
+   PREMIUM DELETE POPUP — NỀN TRẮNG
+============================================================ */
+
+.neo-popup-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.45);
+    backdrop-filter: blur(4px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: neoFade .25s ease;
+    z-index: 999;
+}
+
+@keyframes neoFade {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+}
+
+/* POPUP BOX */
+.neo-popup {
+    width: 390px;
+    padding: 28px;
+    border-radius: 18px;
+
+    background: #ffffff; /* MÀU TRẮNG */
+    border: 1px solid #e2e8f0;
+
+    box-shadow:
+            0 12px 28px rgba(0,0,0,0.12),
+            0 4px 12px rgba(0,0,0,0.08);
+
+    animation: neoScale .25s ease-out;
+    text-align: center;
+}
+
+@keyframes neoScale {
+    from { transform: scale(.92); opacity: 0; }
+    to   { transform: scale(1); opacity: 1; }
+}
+
+/* ICON CẢNH BÁO */
+.neo-popup-icon {
+    width: 72px;
+    height: 72px;
+    margin: 0 auto 14px;
+
+    border-radius: 50%;
+    background: #fee2e2;
+    color: #dc2626;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    box-shadow: 0 0 10px rgba(239,68,68,0.35);
+}
+
+.neo-popup-icon svg {
+    width: 38px;
+    height: 38px;
+}
+
+/* TITLE */
+.neo-popup h3 {
+    margin: 12px 0 8px;
+    font-size: 22px;
+    font-weight: 800;
+    color: #111827;
+}
+
+/* DESCRIPTION */
+.neo-popup p {
+    margin: 0 0 18px;
+    font-size: 15px;
+    color: #374151;
+    font-weight: 500;
+    line-height: 1.55;
+}
+
+.neo-popup p strong {
+    color: #dc2626;
+    font-weight: 700;
+}
+
+/* BUTTONS */
+.neo-popup-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+}
+
+.neo-cancel,
+.neo-delete {
+    padding: 10px 18px;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: .25s ease;
+}
+
+/* Cancel */
+.neo-cancel {
+    background: #f1f5f9;
+    border: 1px solid #e2e8f0;
+    color: #475569;
+}
+.neo-cancel:hover {
+    background: #e2e8f0;
+}
+
+/* Delete */
+.neo-delete {
+    background: #dc2626;
+    border: none;
+    color: #fff;
+    box-shadow: 0 0 12px rgba(239,68,68,0.35);
+}
+.neo-delete:hover {
+    background: #b91c1c;
+    box-shadow:
+            0 0 16px rgba(239,68,68,0.55),
+            0 0 8px rgba(239,68,68,0.40);
+}
+
+/* Mobile */
+@media (max-width: 640px) {
+    .neo-popup { width: 92%; }
+}
+/* ============================
+   POPUP TRẮNG HOÀN TOÀN (NO BLUR)
+============================ */
+
+.neo-popup-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.55) !important;
+    backdrop-filter: blur(2px) !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: neoFade .25s ease;
+    z-index: 9999;
+}
+
+/* HỘP POPUP — TRẮNG HOÀN TOÀN */
+.neo-popup {
+    width: 380px;
+    padding: 28px;
+    border-radius: 18px;
+
+    background: #ffffff !important;      /* NỀN TRẮNG */
+    border: 1px solid #e2e8f0 !important;
+
+    box-shadow:
+            0 14px 32px rgba(0,0,0,0.18),
+            0 6px 14px rgba(0,0,0,0.08);
+
+    animation: neoScale .25s ease-out;
+    text-align: center;
+}
+
+/* ICON CẢNH BÁO */
+.neo-popup-icon {
+    width: 72px;
+    height: 72px;
+    margin: 0 auto 14px;
+    border-radius: 50%;
+    background: #fee2e2 !important;
+    color: #dc2626 !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.neo-popup-icon svg {
+    width: 38px;
+    height: 38px;
+}
+
+/* TITLE */
+.neo-popup h3 {
+    margin: 12px 0 6px;
+    font-size: 22px;
+    font-weight: 800;
+    color: #111827 !important;
+    text-shadow: none !important;
+}
+
+/* DESCRIPTION */
+.neo-popup p {
+    margin: 0 0 18px;
+    font-size: 15px;
+    color: #374151 !important;    /* đảm bảo không bị trắng */
+    font-weight: 500;
+}
+
+/* STRONG */
+.neo-popup p strong {
+    color: #dc2626 !important;
+}
+
+/* BUTTON WRAP */
+.neo-popup-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+}
+
+/* BUTTON CANCEL */
+.neo-cancel {
+    padding: 10px 18px;
+    background: #f1f5f9 !important;
+    border: 1px solid #e2e8f0 !important;
+    color: #475569 !important;
+    border-radius: 10px;
+    cursor: pointer;
+}
+.neo-cancel:hover {
+    background: #e2e8f0 !important;
+}
+
+/* BUTTON DELETE */
+.neo-delete {
+    padding: 10px 18px;
+    background: #dc2626 !important;
+    color: #fff !important;
+    border-radius: 10px;
+    border: none !important;
+    cursor: pointer;
+    box-shadow: 0 0 12px rgba(239,68,68,0.4);
+}
+.neo-delete:hover {
+    background: #b91c1c !important;
+}

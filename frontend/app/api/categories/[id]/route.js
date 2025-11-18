@@ -1,34 +1,68 @@
 import prisma from "@/lib/prisma";
+import { NextResponse } from "next/server";  // Thêm import NextResponse để nhất quán
 
-export async function GET(_, { params }) {
-    const { id } = params;
+export async function GET(request, { params }) {
+    const resolvedParams = await params;  // Unwrap params (Promise) đúng cách
+    const id = Number(resolvedParams.id);
 
-    const category = await prisma.category.findUnique({
-        where: { id: Number(id) },
-    });
+    if (isNaN(id)) {
+        return NextResponse.json({ error: "Invalid ID" }, { status: 400 });
+    }
 
-    return Response.json(category);
+    try {
+        const item = await prisma.category.findUnique({ where: { id } });
+
+        if (!item) {
+            return NextResponse.json({ error: "Category not found" }, { status: 404 });
+        }
+
+        return NextResponse.json(item);
+    } catch (err) {
+        console.error("GET Error:", err);
+        return NextResponse.json({ error: "Internal server error" }, { status: 500 });
+    }
 }
 
-export async function PUT(req, { params }) {
-    const { id } = params;
-    const body = await req.json();
-    const { name, slug } = body;
+export async function PUT(request, { params }) {
+    const resolvedParams = await params;  // Unwrap params
+    const id = Number(resolvedParams.id);
 
-    const updated = await prisma.category.update({
-        where: { id: Number(id) },
-        data: { name, slug },
-    });
+    if (isNaN(id)) {
+        return NextResponse.json({ error: "Invalid ID" }, { status: 400 });
+    }
 
-    return Response.json(updated);
+    try {
+        const { name } = await request.json();
+
+        if (!name || typeof name !== "string" || name.trim() === "") {
+            return NextResponse.json({ error: "Name is required and must be a non-empty string" }, { status: 400 });
+        }
+
+        const updated = await prisma.category.update({
+            where: { id },
+            data: { name: name.trim() },
+        });
+
+        return NextResponse.json(updated);
+    } catch (err) {
+        console.error("PUT Error:", err);
+        return NextResponse.json({ error: "Internal server error" }, { status: 500 });
+    }
 }
 
-export async function DELETE(_, { params }) {
-    const { id } = params;
+export async function DELETE(request, { params }) {
+    const resolvedParams = await params;  // Unwrap params
+    const id = Number(resolvedParams.id);
 
-    await prisma.category.delete({
-        where: { id: Number(id) },
-    });
+    if (isNaN(id)) {
+        return NextResponse.json({ error: "Invalid ID" }, { status: 400 });
+    }
 
-    return Response.json({ message: "Deleted" });
+    try {
+        await prisma.category.delete({ where: { id } });
+        return NextResponse.json({ message: "Deleted successfully" });
+    } catch (err) {
+        console.error("DELETE Error:", err);
+        return NextResponse.json({ error: "Internal server error" }, { status: 500 });
+    }
 }

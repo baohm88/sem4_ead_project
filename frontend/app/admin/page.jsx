@@ -53,13 +53,19 @@ export default function DashboardPage() {
                     sources: 4,   // dữ liệu giả
                 });
 
+                // Lấy 5 categories cập nhật gần nhất
+                const top5 = list.slice(0, 5);
                 setRecent(
-                    list.slice(0, 5).map((c) => ({
-                        id: c?.id,
-                        name: c?.name,
-                        date: new Date().toLocaleDateString("vi-VN"),
+                    top5.map((c) => ({
+                        id: c.id,
+                        name: c.name,
+                        date: c.updatedAt
+                            ? new Date(c.updatedAt).toLocaleString("vi-VN")
+                            : "—",
                     }))
                 );
+
+
             } catch (err) {
                 console.error(err);
                 if (!mounted) return;

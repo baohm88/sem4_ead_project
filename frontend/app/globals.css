@@ -1,4 +1,26 @@
 @import "tailwindcss";
+/* 1) Khai báo font */
+:root {
+    font-family: var(--font-geist-sans), system-ui, sans-serif;
+}
+
+/* 2) Cho body dùng font Geist mặc định */
+.admin-body {
+    font-family: var(--font-geist-sans), system-ui, sans-serif;
+    background: #f5f7fa;
+    color: #1f2937;
+}
+
+/* 3) Code blocks hoặc mono */
+code, pre {
+    font-family: var(--font-geist-mono), monospace;
+}
+
+body {
+    font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont,
+    "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+
 
 :root {
   --background: #ffffff;
@@ -8,8 +30,6 @@
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
 }
 
 @media (prefers-color-scheme: dark) {

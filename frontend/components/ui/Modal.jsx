@@ -1,18 +1,14 @@
 "use client";
 
-import { Dialog, DialogPanel } from "@headlessui/react";
-
 export default function Modal({ open, title, children }) {
-    return (
-        <Dialog open={open} onClose={() => {}} className="relative z-50">
-            <div className="fixed inset-0 bg-black/40" />
+    if (!open) return null;
 
-            <div className="fixed inset-0 flex items-center justify-center p-4">
-                <DialogPanel className="bg-white p-6 rounded-xl max-w-md w-full shadow-xl">
-                    <h2 className="text-xl font-semibold mb-4">{title}</h2>
-                    {children}
-                </DialogPanel>
+    return (
+        <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
+            <div className="bg-white p-6 rounded-xl w-full max-w-md shadow-xl">
+                <h2 className="text-xl font-bold mb-3">{title}</h2>
+                {children}
             </div>
-        </Dialog>
+        </div>
     );
 }
