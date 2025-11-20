@@ -1,0 +1,96 @@
+"use client";
+
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { useState } from "react";
+import "@/styles/admin/sidebar.css";
+
+import {
+    MdDashboard,
+    MdCategory,
+    MdMenu,
+    MdClose,
+    MdChevronLeft,
+    MdChevronRight,
+    MdBallot
+} from "react-icons/md";
+
+export default function Sidebar() {
+    const pathname = usePathname();
+
+    // mobile open
+    const [mobileOpen, setMobileOpen] = useState(false);
+
+    // desktop collapse
+    const [collapsed, setCollapsed] = useState(false);
+
+    const navItems = [
+        { name: "Dashboard", href: "/admin", icon: MdDashboard },
+        { name: "Categories", href: "/admin/categories/list", icon: MdCategory },
+        { name: "Client", href: "/", icon: MdBallot },
+    ];
+
+    return (
+        <>
+            {/* Mobile button */}
+            <button className="sb-toggle" onClick={() => setMobileOpen(true)}>
+                <MdMenu size={24} />
+            </button>
+
+            {mobileOpen && (
+                <div className="sb-overlay" onClick={() => setMobileOpen(false)} />
+            )}
+
+            <aside
+                className={`sidebar ${mobileOpen ? "is-open" : ""} ${
+                    collapsed ? "is-collapsed" : ""
+                }`}
+            >
+                <div className="sidebar-header">
+                    <h2 className="brand">{collapsed ? "A" : "AdminPanel"}</h2>
+
+                    <button
+                        className="sb-close md-hidden"
+                        onClick={() => setMobileOpen(false)}
+                    >
+                        <MdClose size={24} />
+                    </button>
+
+                    {/* Collapse btn desktop */}
+                    <button
+                        className="sb-collapse-btn lg-only"
+                        onClick={() => setCollapsed(!collapsed)}
+                    >
+                        {collapsed ? (
+                            <MdChevronRight size={22} />
+                        ) : (
+                            <MdChevronLeft size={22} />
+                        )}
+                    </button>
+                </div>
+
+                <nav className="sidebar-nav">
+                    {navItems.map((item) => {
+                        const Icon = item.icon;
+                        const active = pathname.startsWith(item.href);
+
+                        return (
+                            <Link
+                                key={item.href}
+                                href={item.href}
+                                className={`sidebar-item ${active ? "is-active" : ""}`}
+                                onClick={() => setMobileOpen(false)}
+                            >
+                                <div className="sidebar-icon">
+                                    <Icon size={22} />
+                                </div>
+
+                                {!collapsed && <span>{item.name}</span>}
+                            </Link>
+                        );
+                    })}
+                </nav>
+            </aside>
+        </>
+    );
+}

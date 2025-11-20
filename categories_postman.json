@@ -1,0 +1,68 @@
+{
+  "info": {
+    "name": "Categories API",
+    "_postman_id": "c1234567-89ab-4def-0123-456789abcdef",
+    "description": "CRUD Categories Test for Next.js + Prisma",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "GET All Categories",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": "http://localhost:3000/api/categories"
+      }
+    },
+    {
+      "name": "GET Category by ID",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": "http://localhost:3000/api/categories/1"
+      }
+    },
+    {
+      "name": "CREATE Category (POST)",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"name\": \"Category Demo\"\n}"
+        },
+        "url": "http://localhost:3000/api/categories"
+      }
+    },
+    {
+      "name": "UPDATE Category (PUT)",
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"name\": \"Updated Category Name\"\n}"
+        },
+        "url": "http://localhost:3000/api/categories/1"
+      }
+    },
+    {
+      "name": "DELETE Category",
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "url": "http://localhost:3000/api/categories/1"
+      }
+    }
+  ]
+}

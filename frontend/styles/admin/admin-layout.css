@@ -1,0 +1,55 @@
+/* ===== Admin Layout (Light) ===== */
+
+.admin-layout {
+    display: grid;
+    grid-template-columns: 1fr; /* mobile: chỉ content, sidebar overlay phía trên */
+    min-height: 100dvh;
+    background: #f8fafc; /* nhẹ nhàng */
+    color: #0f172a;
+}
+
+/* Khu vực nội dung chính (bên phải trên desktop) */
+.admin-content {
+    padding: 1rem;
+}
+
+.admin-header {
+    position: sticky;
+    top: 0;
+    background: #ffffff;
+    border-bottom: 1px solid #e5e7eb;
+    z-index: 10;
+}
+
+.admin-header .wrap {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0.75rem 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.admin-main {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 1rem;
+}
+
+/* Desktop: có cột sidebar cố định 18rem + content */
+@media (min-width: 768px) {
+    .admin-layout {
+        grid-template-columns: 18rem 1fr;
+    }
+
+    /* Khi sidebar ở vị trí static (desktop), content không cần padding trái */
+    .admin-content {
+        padding: 0;
+    }
+
+    .admin-header .wrap,
+    .admin-main {
+        padding-left: 1.25rem;
+        padding-right: 1.25rem;
+    }
+}

@@ -1,0 +1,139 @@
+/* ===== Toggle Mobile ===== */
+.sb-toggle {
+    position: fixed;
+    top: 1rem;
+    left: 1rem;
+    z-index: 60;
+    padding: 0.5rem;
+    border-radius: 0.5rem;
+    background: #2563eb;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+}
+
+.sb-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.4);
+    z-index: 50;
+}
+
+/* ===== Sidebar ===== */
+.sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100dvh;
+    width: 18rem;
+    background: #fff;
+    color: #111827;
+    border-right: 1px solid #e5e7eb;
+    transform: translateX(-100%);
+    transition: transform .3s ease, width .25s ease;
+    z-index: 55;
+    display: flex;
+    flex-direction: column;
+}
+
+.sidebar.is-open {
+    transform: translateX(0);
+}
+
+/* Desktop default open */
+@media (min-width: 768px) {
+    .sidebar {
+        transform: translateX(0);
+        position: sticky;
+        top: 0;
+    }
+    .sb-toggle {
+        display: none;
+    }
+}
+
+/* ===== COLLAPSE MODE ===== */
+.sidebar.is-collapsed {
+    width: 4.5rem;
+}
+
+.sidebar.is-collapsed .sidebar-item span {
+    display: none;
+}
+
+.sidebar.is-collapsed .sidebar-item {
+    justify-content: center;
+}
+
+.sidebar.is-collapsed .brand {
+    font-size: 1.3rem;
+}
+
+/* ===== Header ===== */
+.sidebar-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: .75rem 1rem;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.brand {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #1d4ed8;
+}
+
+.sb-close {
+    display: none;
+}
+
+/* collapse button desktop */
+.lg-only {
+    display: none;
+}
+
+@media (min-width: 768px) {
+    .lg-only {
+        display: block !important;
+    }
+}
+
+/* ===== Navigation ===== */
+.sidebar-nav {
+    padding: 1rem .75rem;
+    display: flex;
+    flex-direction: column;
+    gap: .5rem;
+}
+
+.sidebar-item {
+    display: flex;
+    align-items: center;
+    gap: .75rem;
+    padding: .6rem .75rem;
+    border-radius: .5rem;
+    color: #374151;
+    text-decoration: none;
+    transition: .2s ease;
+}
+
+.sidebar-item:hover {
+    background: #f3f4f6;
+    transform: translateX(4px);
+}
+
+.sidebar-item.is-active {
+    background: #eff6ff;
+    color: #1d4ed8;
+    border: 1px solid #bfdbfe;
+}
+
+/* Icon animation */
+.sidebar-icon svg {
+    transition: transform .2s ease;
+}
+
+.sidebar-item:hover svg {
+    transform: scale(1.15);
+}

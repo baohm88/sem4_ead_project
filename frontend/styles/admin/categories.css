@@ -1,0 +1,723 @@
+/* styles/admin/categories.css */
+
+.cat-wrap {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    padding: 16px;
+}
+
+.cat-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+}
+
+.cat-title {
+    font-size: 20px;
+    font-weight: 700;
+    margin: 0;
+}
+
+.cat-actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.btn-link,
+.btn-primary,
+.btn-ghost {
+    appearance: none;
+    border: 1px solid transparent;
+    background: none;
+    font-size: 14px;
+    line-height: 1;
+    padding: 10px 12px;
+    border-radius: 8px;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color .15s ease, border-color .15s ease, color .15s ease, opacity .15s ease;
+}
+
+/* Link nhẹ */
+.btn-link {
+    color: #2563eb;
+    border-color: transparent;
+}
+.btn-link:hover { text-decoration: underline; }
+
+/* Nút chính */
+.btn-primary {
+    background: #2563eb;
+    color: #fff;
+    border-color: #2563eb;
+}
+.btn-primary:hover { background: #1e4fd6; border-color: #1e4fd6; }
+.btn-primary:disabled { opacity: .5; cursor: not-allowed; }
+
+/* Nút viền nhạt (ghost) */
+.btn-ghost {
+    border-color: #e5e7eb;
+    color: #111827;
+    background: #fff;
+}
+.btn-ghost:hover { background: #f9fafb; }
+.btn-ghost:disabled { opacity: .5; cursor: not-allowed; }
+
+/* Card trong trang categories (kế thừa từ Card.jsx nếu có) */
+.cat-card {
+    background: #fff;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    padding: 16px;
+}
+
+/* Thanh công cụ */
+.cat-tool-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.cat-input {
+    flex: 1;
+    min-width: 220px;
+    padding: 10px 12px;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    font-size: 14px;
+    outline: none;
+    transition: border-color .15s ease, box-shadow .15s ease;
+}
+.cat-input:focus {
+    border-color: #2563eb;
+    box-shadow: 0 0 0 3px rgba(37,99,235,.15);
+}
+
+.cat-counter {
+    color: #6b7280;
+    font-size: 13px;
+}
+
+/* Tiêu đề section */
+.cat-section-title {
+    margin: 0 0 12px;
+    font-size: 16px;
+    font-weight: 700;
+}
+
+/* Bảng */
+.cat-table-wrap {
+    width: 100%;
+    overflow: auto;
+}
+
+.cat-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+}
+
+.cat-table thead th {
+    text-align: left;
+    padding: 12px;
+    color: #374151;
+    font-weight: 600;
+    background: #f9fafb;
+    border-bottom: 1px solid #e5e7eb;
+    white-space: nowrap;
+}
+
+.cat-table tbody td {
+    padding: 12px;
+    border-bottom: 1px solid #f3f4f6;
+    vertical-align: middle;
+}
+
+.cat-td-strong { font-weight: 600; }
+.cat-td-mono { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; color: #374151; }
+
+/* Hành động trong bảng */
+.cat-actions-cell {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+/* Empty state */
+.cat-empty {
+    padding: 12px;
+    color: #6b7280;
+}
+
+/* Phân trang */
+.cat-pagination {
+    margin-top: 12px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    justify-content: flex-end;
+}
+
+.cat-page-indicator {
+    color: #374151;
+    font-size: 13px;
+}
+
+/* Nhẹ nhàng hiệu ứng vào (nếu chưa dùng animations.css) */
+.fade-in {
+    animation: cat-fade-in .2s ease-out;
+}
+@keyframes cat-fade-in {
+    from { opacity: 0; transform: translateY(2px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Responsive nhỏ */
+@media (max-width: 640px) {
+    .cat-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    .cat-actions {
+        width: 100%;
+        justify-content: flex-start;
+        flex-wrap: wrap;
+    }
+    .cat-pagination {
+        justify-content: center;
+    }
+}
+/* ============================================================
+   NEO GLASS ICONS – phá cách cực mạnh
+   ============================================================ */
+
+.neo-action-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+/* base icon */
+.neo-icon-btn {
+    cursor: pointer;
+    padding: 0;
+    border: none;
+    background: none;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    transition: transform .25s ease, filter .25s ease;
+    position: relative;
+}
+
+/* SVG line art */
+.neo-icon {
+    width: 22px;
+    height: 22px;
+    stroke: currentColor;
+    fill: none;
+    stroke-width: 1.7;
+
+    transition:
+            stroke .25s ease,
+            filter .25s ease,
+            transform .3s ease;
+}
+
+/* ========== UNIQUE EFFECT: NEON AURA ========== */
+.neo-icon-btn::after {
+    content: "";
+    position: absolute;
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    background: currentColor;
+    opacity: 0;
+    filter: blur(14px);
+    transition: opacity .35s ease;
+}
+
+/* hover */
+.neo-icon-btn:hover {
+    transform: translateY(-2px) scale(1.18);
+    filter: brightness(1.3);
+}
+
+.neo-icon-btn:hover .neo-icon {
+    stroke-width: 2.4;
+    transform: scale(1.25);
+}
+
+.neo-icon-btn:hover::after {
+    opacity: 0.45;
+}
+
+/* CLICK pulse */
+.neo-icon-btn:active .neo-icon {
+    transform: scale(0.85);
+    filter: brightness(1.6);
+}
+
+/* COLOR THEMES */
+.neo-icon-btn.view { color: #38bdf8; }
+.neo-icon-btn.edit { color: #facc15; }
+.neo-icon-btn.delete { color: #f87171; }
+
+.neo-icon-btn.delete:hover { color: #ef4444; }
+/* ============================================================
+   PREMIUM TABLE STYLE (Linear / Vercel / Notion style)
+   ============================================================ */
+
+/* Table wrapper */
+.cat-table-wrap {
+    border-radius: 14px;
+    overflow: hidden;
+    border: 1px solid rgba(148,163,184,0.22); /* slate-400/20 */
+    background: rgba(255,255,255,0.5);
+    backdrop-filter: blur(10px);
+    box-shadow:
+            0 4px 12px rgba(0,0,0,0.04),
+            0 2px 4px rgba(0,0,0,0.06);
+}
+
+/* TABLE */
+.cat-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 15px;
+}
+
+/* HEAD */
+.cat-table thead th {
+    padding: 14px 18px;
+    text-align: left;
+    background: rgba(255,255,255,0.65);
+    backdrop-filter: blur(12px);
+    font-weight: 600;
+    font-size: 14px;
+    color: #475569; /* slate-600 */
+
+    border-bottom: 1px solid rgba(148,163,184,0.22);
+}
+
+/* BODY ROWS */
+.cat-table tbody tr {
+    transition: background .22s ease, transform .16s ease;
+}
+
+/* Hover row — spotlight subtle */
+.cat-table tbody tr:hover {
+    background: rgba(241,245,249,0.7); /* slate-100/70 */
+}
+
+/* CELLS */
+.cat-table tbody td {
+    padding: 14px 18px;
+    border-bottom: 1px solid rgba(226,232,240,0.55); /* slate-200/55 */
+    color: #334155; /* slate-700 */
+}
+
+/* Remove border for last row */
+.cat-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+/* Strong name */
+.cat-td-strong {
+    font-weight: 600;
+}
+
+/* Mono ID */
+.cat-td-mono {
+    font-family: ui-monospace, SFMono-Regular, Menlo;
+    color: #1e293b; /* slate-800 */
+    font-size: 14px;
+}
+
+/* Animation: fade + slight slide */
+.cat-table tbody tr {
+    animation: fadeSlide .35s ease both;
+}
+
+@keyframes fadeSlide {
+    from {
+        opacity: 0;
+        transform: translateY(4px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Action column spacing */
+.cat-table td .rounded-action-row {
+    gap: 12px;
+}
+
+/* Responsive tweaks */
+@media (max-width: 640px) {
+    .cat-table thead {
+        display: none;
+    }
+
+    .cat-table tbody tr {
+        display: block;
+        margin-bottom: 16px;
+        background: white;
+        border-radius: 12px;
+        padding: 12px;
+        box-shadow:
+                0 2px 8px rgba(0,0,0,0.06),
+                0 1px 3px rgba(0,0,0,0.08);
+    }
+
+    .cat-table tbody td {
+        display: flex;
+        justify-content: space-between;
+        border-bottom: none;
+        padding: 8px 4px;
+    }
+
+    .cat-table tbody td::before {
+        content: attr(data-label);
+        font-weight: 600;
+        color: #64748b; /* slate-500 */
+    }
+}
+/* ============================================================
+   RESPONSIVE TABLE (MOBILE FRIENDLY) – PREMIUM STYLE
+   ============================================================ */
+
+@media (max-width: 640px) {
+
+    /* Ẩn header */
+    .cat-table thead {
+        display: none;
+    }
+
+    /* Mỗi hàng thành 1 card */
+    .cat-table tbody tr {
+        display: block;
+        background: white;
+        margin-bottom: 16px;
+        padding: 16px;
+        border-radius: 14px;
+
+        box-shadow:
+                0 3px 10px rgba(0,0,0,0.06),
+                0 1px 3px rgba(0,0,0,0.08);
+
+        animation: fadeSlide .35s ease both;
+    }
+
+    /* Các ô sẽ nằm theo dạng "label – value" */
+    .cat-table tbody td {
+        display: flex;
+        justify-content: space-between;
+        padding: 10px 6px;
+        border-bottom: 1px solid rgba(226,232,240,0.6);
+    }
+
+    /* Bỏ border cuối cùng */
+    .cat-table tbody tr td:last-child {
+        border-bottom: none;
+    }
+
+    /* Nhãn (label) tự sinh */
+    .cat-table tbody td::before {
+        content: attr(data-label);
+        color: #64748b;
+        font-size: 13px;
+        font-weight: 600;
+        margin-right: 12px;
+    }
+
+    /* Mono ID đẹp hơn */
+    .cat-table td:nth-child(1) {
+        font-family: ui-monospace, Menlo, Consolas;
+        font-size: 13px;
+        color: #334155;
+    }
+
+    /* Action icons đặt giữa */
+    .neo-action-row {
+        width: 100%;
+        justify-content: flex-end;
+        gap: 14px;
+    }
+}
+/* ============================================================
+   CATEGORY LIST — SAME STYLE AS VIEW PAGE (NEON + CARD)
+   ============================================================ */
+
+.cat-list {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
+/* Card item */
+.cat-item-card {
+    padding: 18px;
+    border-radius: 16px;
+
+    background: rgba(255,255,255,0.55);
+    backdrop-filter: blur(14px);
+
+    border: 1px solid rgba(148,163,184,0.25);
+
+    box-shadow:
+            0 4px 16px rgba(0,0,0,0.05),
+            0 2px 6px rgba(0,0,0,0.06);
+
+    transition: transform .2s ease, box-shadow .25s ease;
+}
+
+/* Glow gradient xanh → tím khi hover */
+.cat-item-card:hover {
+    transform: translateY(-2px);
+    box-shadow:
+            0 0 14px rgba(59,130,246,0.35),
+            0 0 14px rgba(168,85,247,0.35);
+}
+
+/* rows */
+.cat-item-row {
+    display: grid;
+    grid-template-columns: 160px 1fr;
+    align-items: center;
+    padding: 10px 0;
+}
+
+.cat-label {
+    font-size: 14px;
+    font-weight: 600;
+    color: #64748b;
+}
+
+.cat-value {
+    font-size: 15px;
+    font-weight: 500;
+    color: #1e293b;
+}
+
+/* Mobile */
+@media (max-width: 640px) {
+    .cat-item-row {
+        grid-template-columns: 1fr;
+        gap: 4px;
+    }
+
+    .cat-label {
+        font-size: 13px;
+    }
+}
+/* ============================================================
+   HEADER BUTTONS — MATCH VIEW PAGE STYLE
+   ============================================================ */
+
+.cv-btn-back,
+.cv-btn-edit {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+
+    padding: 10px 16px;
+    border-radius: 12px;
+    font-size: 15px;
+
+    background: rgba(255,255,255,0.5);
+    backdrop-filter: blur(10px);
+
+    color: #475569;
+    border: 1px solid rgba(148,163,184,0.3);
+
+    transition:
+            transform .25s ease,
+            box-shadow .25s ease,
+            color .25s ease;
+}
+
+.cv-btn-back:hover,
+.cv-btn-edit:hover {
+    transform: translateY(-2px);
+    color: #a78bfa;
+    box-shadow: 0 0 12px rgba(139,92,246,0.5);
+}
+
+.cv-btn-back span,
+.cv-btn-edit span {
+    font-weight: 500;
+}
+/* ============================================================
+   TABLE ROW GLOW — MATCH VIEW CARD HOVER
+   ============================================================ */
+
+.cat-table tbody tr {
+    transition: background .25s ease, box-shadow .25s ease, transform .2s ease;
+}
+
+.cat-table tbody tr:hover {
+    background: rgba(255,255,255,0.55);
+    box-shadow:
+            0 0 12px rgba(59,130,246,0.25),
+            0 0 12px rgba(168,85,247,0.25);
+    transform: translateY(-2px);
+}
+/* ============================================================
+   ACTION ICON GLOW — SAME AS VIEW
+   ============================================================ */
+
+.neo-icon-btn {
+    border-radius: 12px;
+    padding: 8px;
+    transition: transform .25s ease, box-shadow .25s ease, color .25s ease;
+}
+
+.neo-icon-btn svg {
+    width: 22px;
+    height: 22px;
+    stroke-width: 2.4;
+    transition: filter .25s ease, transform .25s ease;
+}
+
+/* Hover glow gradient */
+.neo-icon-btn:hover {
+    transform: translateY(-2px) scale(1.12);
+    color: #a855f7;
+
+    box-shadow:
+            0 0 14px rgba(59,130,246,0.45),
+            0 0 14px rgba(168,85,247,0.45);
+}
+
+.neo-icon-btn:hover svg {
+    filter: brightness(1.35);
+}
+.cat-table-wrap {
+    border-radius: 16px;
+    overflow: hidden;
+    border: 1px solid rgba(148,163,184,0.25);
+    background: rgba(255,255,255,0.55);
+    backdrop-filter: blur(14px);
+
+    box-shadow:
+            0 4px 14px rgba(0,0,0,0.05),
+            0 2px 6px rgba(0,0,0,0.06);
+}
+/* ============================
+   POPUP TRẮNG HOÀN TOÀN (NO BLUR)
+============================ */
+
+.neo-popup-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.55) !important;
+    backdrop-filter: blur(2px) !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: neoFade .25s ease;
+    z-index: 9999;
+}
+
+/* HỘP POPUP — TRẮNG HOÀN TOÀN */
+.neo-popup {
+    width: 380px;
+    padding: 28px;
+    border-radius: 18px;
+
+    background: #ffffff !important;      /* NỀN TRẮNG */
+    border: 1px solid #e2e8f0 !important;
+
+    box-shadow:
+            0 14px 32px rgba(0,0,0,0.18),
+            0 6px 14px rgba(0,0,0,0.08);
+
+    animation: neoScale .25s ease-out;
+    text-align: center;
+}
+
+/* ICON CẢNH BÁO */
+.neo-popup-icon {
+    width: 72px;
+    height: 72px;
+    margin: 0 auto 14px;
+    border-radius: 50%;
+    background: #fee2e2 !important;
+    color: #dc2626 !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.neo-popup-icon svg {
+    width: 38px;
+    height: 38px;
+}
+
+/* TITLE */
+.neo-popup h3 {
+    margin: 12px 0 6px;
+    font-size: 22px;
+    font-weight: 800;
+    color: #111827 !important;
+    text-shadow: none !important;
+}
+
+/* DESCRIPTION */
+.neo-popup p {
+    margin: 0 0 18px;
+    font-size: 15px;
+    color: #374151 !important;    /* đảm bảo không bị trắng */
+    font-weight: 500;
+}
+
+/* STRONG */
+.neo-popup p strong {
+    color: #dc2626 !important;
+}
+
+/* BUTTON WRAP */
+.neo-popup-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+}
+
+/* BUTTON CANCEL */
+.neo-cancel {
+    padding: 10px 18px;
+    background: #f1f5f9 !important;
+    border: 1px solid #e2e8f0 !important;
+    color: #475569 !important;
+    border-radius: 10px;
+    cursor: pointer;
+}
+.neo-cancel:hover {
+    background: #e2e8f0 !important;
+}
+
+/* BUTTON DELETE */
+.neo-delete {
+    padding: 10px 18px;
+    background: #dc2626 !important;
+    color: #fff !important;
+    border-radius: 10px;
+    border: none !important;
+    cursor: pointer;
+    box-shadow: 0 0 12px rgba(239,68,68,0.4);
+}
+.neo-delete:hover {
+    background: #b91c1c !important;
+}

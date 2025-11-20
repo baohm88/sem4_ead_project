@@ -1,0 +1,32 @@
+.topbar {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 24px;
+}
+
+/* Avatar */
+.topbar-avatar {
+    width: 40px;
+    height: 40px;
+    background: #2563eb;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 999px;
+    font-weight: 600;
+}
+
+/* Theme button */
+.theme-btn {
+    padding: 8px;
+    border-radius: 8px;
+    background: #e5e7eb;
+}
+
+.theme-btn:hover {
+    background: #d1d5db;
+}
+
