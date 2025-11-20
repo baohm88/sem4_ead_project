@@ -5,11 +5,12 @@ import jakarta.persistence.*;
 import lombok.*;
 
 @Entity
-@Table(name = "article_source")
+@Table(name = "sources")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class ArticleSource {
+@Builder
+public class Source {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -46,7 +47,7 @@ public class ArticleSource {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "category_id")
     @JsonBackReference
-    private ArticleCategory articleCategory;
+    private Category articleCategory;
 
     // 1 = active, 0 = inactive
     private int status;
