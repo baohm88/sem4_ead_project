@@ -19,6 +19,10 @@ public class SourceService {
         this.categoryRepo = categoryRepo;
     }
 
+    public List<Source> getAll() {
+        return sourceRepo.findAll();
+    }
+
     public List<Source> getByCategory(Long categoryId) {
         return sourceRepo.findByArticleCategory_Id(categoryId);
     }

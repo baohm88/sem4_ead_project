@@ -21,6 +21,11 @@ public class SourceController {
         this.sourceService = sourceService;
     }
 
+    @GetMapping
+    public ApiResponse<List<Source>> getAll() {
+        return ApiResponse.success(sourceService.getAll());
+    }
+
     @GetMapping("/category/{categoryId}")
     public ApiResponse<List<Source>> getByCategory(@PathVariable Long categoryId) {
         return ApiResponse.success(sourceService.getByCategory(categoryId));
