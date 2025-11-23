@@ -6,7 +6,7 @@ import Card from "@/components/admin/Card";
 import Link from "next/link";
 
 import "@/styles/admin/category-view.css";
-import { deleteCategory, getCategoryById } from "@/services/categoryService";
+import { deleteCategory, getCategoryById } from "@/services/categoryApi";
 
 /* ICONS (SVG Premium) */
 const IconBack = () => (

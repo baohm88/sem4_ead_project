@@ -6,7 +6,7 @@ import Card from "@/components/admin/Card";
 
 import "@/styles/admin/categories.css"; // CSS list
 import "@/styles/admin/category-edit.css"; // Popup CSS đang dùng bên edit
-import { deleteCategory, fetchCategories } from "@/services/categoryService";
+import { deleteCategory, fetchCategories } from "@/services/categoryApi";
 
 const PAGE_SIZE = 5;
 

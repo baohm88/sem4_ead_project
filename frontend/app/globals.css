@@ -57,3 +57,6 @@ html.dark {
     color: #e2e8f0 !important;
 }
 
+.input {
+  @apply w-full border px-3 py-2 rounded outline-none focus:ring focus:ring-blue-200;
+}

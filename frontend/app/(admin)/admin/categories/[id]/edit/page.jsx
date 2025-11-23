@@ -6,7 +6,11 @@ import Link from "next/link";
 import Card from "@/components/admin/Card";
 
 import "@/styles/admin/category-edit.css";
-import { getCategoryById, updateCategory, deleteCategory } from "@/services/categoryService";
+import {
+  getCategoryById,
+  updateCategory,
+  deleteCategory,
+} from "@/services/categoryApi";
 
 export default function EditCategoryPage() {
   const params = useParams();
@@ -54,14 +58,14 @@ export default function EditCategoryPage() {
 
   /* DELETE */
   async function handleDelete() {
-      const res = await deleteCategory(id);
-  
-      if (res) {
-        router.push("/admin/categories/list");
-      } else {
-        alert("Xoá thất bại!");
-      }
+    const res = await deleteCategory(id);
+
+    if (res) {
+      router.push("/admin/categories/list");
+    } else {
+      alert("Xoá thất bại!");
     }
+  }
 
   if (loading) {
     return (
