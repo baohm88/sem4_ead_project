@@ -60,7 +60,19 @@ public class CategoryController {
 
     // ===================== CREATE ================================
     @PostMapping
-    public ResponseEntity<ApiResponse<Category>> createCategory(@RequestBody Category category) {
+    public ResponseEntity<?> createCategory(@RequestBody Category category) {
+
+        if (categoryRepo.existsByName(category.getName())) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
+                    ErrorResponse.builder()
+                            .success(false)
+                            .status(400)
+                            .message("Category " + category.getName() +  " đã tồn tại!")
+                            .timestamp(System.currentTimeMillis())
+                            .build()
+            );
+        }
+
         Category saved = categoryRepo.save(category);
         return ResponseEntity.status(HttpStatus.CREATED).body(
                 ApiResponse.<Category>builder()
