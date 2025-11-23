@@ -7,11 +7,6 @@ import org.springframework.data.jpa.repository.Query;
 import java.util.List;
 
 public interface ArticleRepository extends JpaRepository<Article, Long> {
-
-    // Tìm bài chưa crawl nội dung (Bot2)
-    @Query("SELECT a FROM Article a WHERE a.status = com.t2404e.newscrawler.entity.ArticleStatus.NEW")
-    List<Article> findNotCrawled();
-
     // Xem bài theo category ID
     List<Article> findByArticleCategory_Id(Long categoryId);
 
@@ -20,4 +15,13 @@ public interface ArticleRepository extends JpaRepository<Article, Long> {
 
     // Kiểm tra category có bài viết hay không
     int countByArticleCategory_Id(Long categoryId);
+
+    // Tìm bài chưa crawl nội dung (Bot2)
+    @Query("SELECT a FROM Article a WHERE a.status = com.t2404e.newscrawler.entity.ArticleStatus.NEW")
+    List<Article> findNewArticles();
+
+    @Query("SELECT a FROM Article a WHERE a.status = com.t2404e.newscrawler.entity.ArticleStatus.NEW")
+    List<Article> findTop10NewArticles(org.springframework.data.domain.Pageable pageable);
+
+    List<Article> findByStatus(ArticleStatus status);
 }

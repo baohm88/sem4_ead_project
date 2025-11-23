@@ -27,6 +27,7 @@ export default function Sidebar() {
     const navItems = [
         { name: "Dashboard", href: "/admin", icon: MdDashboard },
         { name: "Categories", href: "/admin/categories/list", icon: MdCategory },
+        { name: "Sources", href: "/admin/sources/index", icon: MdCategory },
         { name: "Client", href: "/", icon: MdBallot },
     ];
 

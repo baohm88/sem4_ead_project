@@ -30,7 +30,7 @@ public class Article {
     @Column(nullable = false, unique = true, length = 512)
     private String url; // Mỗi bài có 1 URL duy nhất
 
-    @Column(nullable = false, unique = true, length = 255)
+    @Column(nullable = true, unique = false, length = 255)
     private String slug;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -55,6 +55,9 @@ public class Article {
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, length = 20)
     private ArticleStatus status;
+
+    @Column(name = "retry_count")
+    private int retryCount;
 
     @CreationTimestamp
     private LocalDateTime createdAt; // Khi URL được thêm vào
