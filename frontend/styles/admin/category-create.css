@@ -90,3 +90,19 @@
     opacity: 0.6;
     cursor: not-allowed;
 }
+.catc-success {
+    color: #1ec800;
+    font-size: 14px;
+    margin-top: 4px;
+}
+
+.catc-error {
+    color: #ff3b3b;
+    font-size: 14px;
+    margin-top: 4px;
+}
+
+.input-error {
+    border: 1px solid #ff3b3b !important;
+}
+

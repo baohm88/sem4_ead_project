@@ -1,68 +1,78 @@
 import prisma from "@/lib/prisma";
-import { NextResponse } from "next/server";  // Thêm import NextResponse để nhất quán
 
-export async function GET(request, { params }) {
-    const resolvedParams = await params;  // Unwrap params (Promise) đúng cách
-    const id = Number(resolvedParams.id);
+const toPlain = (obj) =>
+    JSON.parse(JSON.stringify(obj, (_, v) => (typeof v === "bigint" ? v.toString() : v)));
 
-    if (isNaN(id)) {
-        return NextResponse.json({ error: "Invalid ID" }, { status: 400 });
-    }
-
+export async function GET(req, context) {
     try {
-        const item = await prisma.category.findUnique({ where: { id } });
+        const params = await context.params;
+        const id = BigInt(params.id);
 
-        if (!item) {
-            return NextResponse.json({ error: "Category not found" }, { status: 404 });
-        }
+        const data = await prisma.category.findUnique({
+            where: { id },
+            include: { Articles: { select: { id: true } } },
+        });
 
-        return NextResponse.json(item);
+        if (!data) return Response.json({ error: "Không tìm thấy" }, { status: 404 });
+
+        return Response.json(
+            toPlain({
+                id: data.id,
+                name: data.name,
+                slug: data.slug,
+                createdAt: data.createdAt,
+                updatedAt: data.updatedAt,
+                postsCount: data.Articles.length,
+            })
+        );
     } catch (err) {
-        console.error("GET Error:", err);
-        return NextResponse.json({ error: "Internal server error" }, { status: 500 });
+        console.error("DETAIL ERROR:", err);
+        return Response.json({ error: "Server error" }, { status: 500 });
     }
 }
 
-export async function PUT(request, { params }) {
-    const resolvedParams = await params;  // Unwrap params
-    const id = Number(resolvedParams.id);
-
-    if (isNaN(id)) {
-        return NextResponse.json({ error: "Invalid ID" }, { status: 400 });
-    }
-
+export async function PUT(req, context) {
     try {
-        const { name } = await request.json();
+        const params = await context.params;
+        const id = BigInt(params.id);
 
-        if (!name || typeof name !== "string" || name.trim() === "") {
-            return NextResponse.json({ error: "Name is required and must be a non-empty string" }, { status: 400 });
-        }
+        const { name, slug } = await req.json();
+        if (!name || !slug)
+            return Response.json({ error: "Name & slug required" }, { status: 400 });
+
+        const dup = await prisma.category.findFirst({
+            where: {
+                OR: [{ name }, { slug }],
+                NOT: { id },
+            },
+        });
+
+        if (dup)
+            return Response.json({ error: "Tên hoặc slug đã tồn tại!" }, { status: 400 });
 
         const updated = await prisma.category.update({
             where: { id },
-            data: { name: name.trim() },
+            data: { name, slug },
         });
 
-        return NextResponse.json(updated);
+        return Response.json(toPlain(updated));
     } catch (err) {
-        console.error("PUT Error:", err);
-        return NextResponse.json({ error: "Internal server error" }, { status: 500 });
+        console.error("UPDATE ERROR:", err);
+        return Response.json({ error: "Server error" }, { status: 500 });
     }
 }
 
-export async function DELETE(request, { params }) {
-    const resolvedParams = await params;  // Unwrap params
-    const id = Number(resolvedParams.id);
-
-    if (isNaN(id)) {
-        return NextResponse.json({ error: "Invalid ID" }, { status: 400 });
-    }
-
+export async function DELETE(req, context) {
     try {
+        const params = await context.params;
+        const id = BigInt(params.id);
+
+        // Không xoá bài viết → Prisma tự SetNull
         await prisma.category.delete({ where: { id } });
-        return NextResponse.json({ message: "Deleted successfully" });
+
+        return Response.json({ success: true });
     } catch (err) {
-        console.error("DELETE Error:", err);
-        return NextResponse.json({ error: "Internal server error" }, { status: 500 });
+        console.error("DELETE ERROR:", err);
+        return Response.json({ error: "Không thể xoá category" }, { status: 500 });
     }
 }

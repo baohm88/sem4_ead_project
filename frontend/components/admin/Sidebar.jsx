@@ -12,7 +12,8 @@ import {
     MdClose,
     MdChevronLeft,
     MdChevronRight,
-    MdBallot
+    MdBallot,
+    MdArticle,       // 👈 THÊM ICON ARTICLE
 } from "react-icons/md";
 
 export default function Sidebar() {
@@ -27,7 +28,10 @@ export default function Sidebar() {
     const navItems = [
         { name: "Dashboard", href: "/admin", icon: MdDashboard },
         { name: "Categories", href: "/admin/categories/list", icon: MdCategory },
-        { name: "Sources", href: "/admin/sources/index", icon: MdCategory },
+
+        // ⭐ NEW: Articles
+        { name: "Articles", href: "/admin/articles/list", icon: MdArticle },
+
         { name: "Client", href: "/", icon: MdBallot },
     ];
 

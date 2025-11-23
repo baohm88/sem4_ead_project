@@ -7,10 +7,48 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+/**
+ * =======================
+ * CATEGORY (categories)
+ * =======================
+ */
 model Category {
-  id   Int    @id @default(autoincrement())
-  name String
+  id   BigInt @id @default(autoincrement())
+  name String @unique
+  slug String @unique
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  Articles Articles[]
+
+  @@map("categories")
+}
+
+/**
+ * =======================
+ * ARTICLES (articles)
+ * =======================
+ */
+model Articles {
+  id          BigInt  @id @default(autoincrement())
+  title       String?
+  slug        String  @unique
+  description String?
+  content     String? @db.Text
+  content_raw String? @db.Text
+  image_url   String?
+  url         String? @unique
+  status      String
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  categoryId BigInt? @map("category_id")
+  sourceId   BigInt? @map("source_id")
+
+  // ⭐ Relation đúng chuẩn Prisma
+  Category Category? @relation(fields: [categoryId], references: [id], onDelete: SetNull)
+
+  @@map("articles")
 }

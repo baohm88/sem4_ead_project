@@ -1,52 +1,71 @@
 // services/categoryService.js
 
-const API_BASE =
-  process.env.NEXT_PUBLIC_API_URL || "http://localhost:8080/api/v1";
-const CATEGORY_ENDPOINT = `${API_BASE}/categories`;
+/** ================= API BASE ================= */
+const CATEGORY_ENDPOINT = "/api/categories";
 
-/** ===== CRUD ===== */
+/** ================= GET LIST ================= */
+export async function fetchCategories(page = 1, limit = 20, q = "") {
+    const url = `${CATEGORY_ENDPOINT}?page=${page}&limit=${limit}&q=${encodeURIComponent(q)}`;
 
-// GET All
-export async function fetchCategories() {
-  const res = await fetch(CATEGORY_ENDPOINT, { cache: "no-store" });
-  if (!res.ok) throw new Error("Failed to fetch categories");
-  return res.json();
+    const res = await fetch(url, { cache: "no-store" });
+    if (!res.ok) throw new Error("Failed to fetch categories");
+
+    return res.json();
 }
 
-// CREATE
-export async function addCategory(name) {
-  const res = await fetch(CATEGORY_ENDPOINT, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ name }),
-  });
-  if (!res.ok) throw new Error("Failed to create category");
-  return res.json();
+/** ================= CREATE ================= */
+export async function addCategory(data) {
+    const res = await fetch(CATEGORY_ENDPOINT, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+    });
+
+    if (!res.ok) throw new Error("Failed to create category");
+    return res.json();
 }
 
-// GET One
+/** ================= GET ONE ================= */
 export async function getCategoryById(id) {
-  const res = await fetch(`${CATEGORY_ENDPOINT}/${id}`);
-  if (!res.ok) throw new Error("Category not found");
-  return res.json();
+    const res = await fetch(`${CATEGORY_ENDPOINT}/${id}`, {
+        cache: "no-store",
+    });
+
+    if (!res.ok) throw new Error("Category not found");
+    return res.json();
 }
 
-// UPDATE
-export async function updateCategory(id, name) {
-  const res = await fetch(`${CATEGORY_ENDPOINT}/${id}`, {
-    method: "PUT",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ name }),
-  });
-  if (!res.ok) throw new Error("Failed to update category");
-  return res.json();
+/** ================= UPDATE (FINAL VERSION) ================= */
+export async function updateCategory(id, data) {
+    const res = await fetch(`${CATEGORY_ENDPOINT}/${id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+    });
+
+    if (!res.ok) throw new Error("Failed to update category");
+    return res.json();
 }
 
-// DELETE
+/** ================= DELETE ================= */
 export async function deleteCategory(id) {
-  console.log("ID to delete: ", id);
-  
-  const res = await fetch(`${CATEGORY_ENDPOINT}/${id}`, { method: "DELETE" });
-  if (!res.ok) throw new Error("Failed to delete category");
-  return true;
+    const res = await fetch(`${CATEGORY_ENDPOINT}/${id}`, {
+        method: "DELETE",
+    });
+
+    if (!res.ok) throw new Error("Failed to delete category");
+    return true;
+}
+
+/** ================= CHECK SLUG UNIQUE ================= */
+export async function checkSlugUnique(slug, id = null) {
+    const url = id
+        ? `/api/categories/check-slug?slug=${slug}&id=${id}`
+        : `/api/categories/check-slug?slug=${slug}`;
+
+    const res = await fetch(url);
+    if (!res.ok) return false;
+
+    const json = await res.json();
+    return json.exists;
 }

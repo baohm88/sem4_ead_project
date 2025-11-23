@@ -1,0 +1,20 @@
+.ck-wrapper {
+    margin-top: 12px;
+    border-radius: 14px;
+    padding: 6px;
+    background: rgba(255,255,255,0.55);
+    border: 1px solid rgba(148,163,184,0.25);
+    backdrop-filter: blur(10px);
+}
+
+.ck-editor__editable {
+    min-height: 260px;
+    padding: 18px !important;
+    border-radius: 10px !important;
+}
+
+.ck-content img {
+    max-width: 100%;
+    border-radius: 10px;
+    margin: 12px 0;
+}

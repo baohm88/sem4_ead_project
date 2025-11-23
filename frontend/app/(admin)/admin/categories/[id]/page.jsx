@@ -125,35 +125,65 @@ export default function ViewCategoryPage() {
       <Card className="cv-card">
         <h2 className="cv-title">Thông tin Category</h2>
 
-        <div className="cv-table">
-          <div className="cv-row">
-            <span className="cv-label">ID</span>
-            <span className="cv-value">{category.id}</span>
+          <div className="cv-table">
+
+              {/* ID */}
+              <div className="cv-row">
+                  <span className="cv-label">ID</span>
+                  <span className="cv-value">{category.id}</span>
+              </div>
+
+              {/* Name */}
+              <div className="cv-row">
+                  <span className="cv-label">Tên Category</span>
+                  <span className="cv-value">{category.name}</span>
+              </div>
+
+              {/* Slug */}
+              <div className="cv-row">
+                  <span className="cv-label">Slug</span>
+                  <span className="cv-value cv-badge">{category.slug}</span>
+              </div>
+
+              {/* Posts Count */}
+              <div className="cv-row">
+                  <span className="cv-label">Số bài viết</span>
+                  <span className="cv-value cv-badge-blue">{category.postsCount}</span>
+              </div>
+
+              {/* Link xem bài viết trong category */}
+              <div className="cv-row">
+                  <span className="cv-label">Danh sách bài viết</span>
+                  <Link
+                      href={`/admin/articles?category=${category.id}`}
+                      className="cv-link"
+                  >
+                      👉 Xem bài viết trong mục này
+                  </Link>
+              </div>
+
+              {/* Created */}
+              <div className="cv-row">
+                  <span className="cv-label">Ngày tạo</span>
+                  <span className="cv-value">
+      {category.createdAt
+          ? new Date(category.createdAt).toLocaleString()
+          : "--"}
+    </span>
+              </div>
+
+              {/* Updated */}
+              <div className="cv-row">
+                  <span className="cv-label">Cập nhật cuối</span>
+                  <span className="cv-value">
+      {category.updatedAt
+          ? new Date(category.updatedAt).toLocaleString()
+          : "--"}
+    </span>
+              </div>
           </div>
 
-          <div className="cv-row">
-            <span className="cv-label">Tên Category</span>
-            <span className="cv-value">{category.name}</span>
-          </div>
 
-          <div className="cv-row">
-            <span className="cv-label">Ngày tạo</span>
-            <span className="cv-value">
-              {category.createdAt
-                ? new Date(category.createdAt).toLocaleString()
-                : "--"}
-            </span>
-          </div>
-
-          <div className="cv-row">
-            <span className="cv-label">Cập nhật cuối</span>
-            <span className="cv-value">
-              {category.updatedAt
-                ? new Date(category.updatedAt).toLocaleString()
-                : "--"}
-            </span>
-          </div>
-        </div>
       </Card>
 
       {/* POPUP DELETE */}
