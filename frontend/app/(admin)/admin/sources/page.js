@@ -14,6 +14,8 @@ export default function SourcesPage() {
   const [modalOpen, setModalOpen] = useState(false);
   const [editData, setEditData] = useState(null);
 
+  console.log("edit data: ", editData);
+
   const load = async () => {
     const data = await getSources();
     setSources(data);

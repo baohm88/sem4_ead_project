@@ -1,14 +1,10 @@
 package com.t2404e.newscrawler.controller;
 
-import com.t2404e.newscrawler.dto.SourceRequest;
-import com.t2404e.newscrawler.dto.ApiResponse;
+import com.t2404e.newscrawler.dto.*;
 import com.t2404e.newscrawler.entity.Source;
 import com.t2404e.newscrawler.service.SourceService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.web.bind.annotation.*;
-import com.t2404e.newscrawler.dto.SourceLinkPreviewRequest;
-import com.t2404e.newscrawler.dto.ArticlePreviewRequest;
-import com.t2404e.newscrawler.dto.ArticlePreviewResponse;
 
 import java.util.List;
 
@@ -25,7 +21,7 @@ public class SourceController {
     }
 
     @GetMapping
-    public ApiResponse<List<Source>> getAll() {
+    public ApiResponse<List<SourceResponse>> getAll() {
         return ApiResponse.success(sourceService.getAll());
     }
 

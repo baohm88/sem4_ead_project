@@ -1,6 +1,6 @@
 package com.t2404e.newscrawler.service;
 
-import com.t2404e.newscrawler.dto.SourceRequest;
+import com.t2404e.newscrawler.dto.*;
 import com.t2404e.newscrawler.entity.Category;
 import com.t2404e.newscrawler.entity.Source;
 import com.t2404e.newscrawler.repository.CategoryRepository;
@@ -9,9 +9,7 @@ import org.springframework.stereotype.Service;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
-import com.t2404e.newscrawler.dto.SourceLinkPreviewRequest;
-import com.t2404e.newscrawler.dto.ArticlePreviewRequest;
-import com.t2404e.newscrawler.dto.ArticlePreviewResponse;
+
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.Set;
@@ -28,8 +26,10 @@ public class SourceService {
         this.categoryRepo = categoryRepo;
     }
 
-    public List<Source> getAll() {
-        return sourceRepo.findAll();
+    public List<SourceResponse> getAll() {
+        return sourceRepo.findAll().stream()
+                .map(this::toResponse)
+                .toList();
     }
 
     public List<Source> getByCategory(Long categoryId) {
@@ -174,6 +174,23 @@ public class SourceService {
     private String normalizeUrl(String url) {
         if (url == null) return null;
         return url.split("#")[0].trim();
+    }
+
+    private SourceResponse toResponse(Source s) {
+        return SourceResponse.builder()
+                .id(s.getId())
+                .title(s.getTitle())
+                .domain(s.getDomain())
+                .path(s.getPath())
+                .linkSelector(s.getLinkSelector())
+                .titleSelector(s.getTitleSelector())
+                .descriptionSelector(s.getDescriptionSelector())
+                .contentSelector(s.getContentSelector())
+                .imageSelector(s.getImageSelector())
+                .removeSelector(s.getRemoveSelector())
+                .status(s.getStatus())
+                .categoryId(s.getArticleCategory() != null ? s.getArticleCategory().getId() : null)
+                .build();
     }
 
 }
