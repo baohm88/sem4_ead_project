@@ -7,10 +7,47 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+/**
+ * =======================
+ * CATEGORY (categories)
+ * =======================
+ */
 model Category {
-  id   Int    @id @default(autoincrement())
-  name String
+  id   BigInt @id @default(autoincrement())
+  name String @unique
+  slug String @unique
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  articles Article[] @relation("CategoryArticles")
+
+  @@map("categories")
+}
+
+/**
+ * =======================
+ * ARTICLE (articles)
+ * =======================
+ */
+model Article {
+  id          BigInt  @id @default(autoincrement())
+  title       String?
+  slug        String  @unique
+  description String?
+  content     String? @db.Text
+  content_raw String? @db.Text
+  image_url   String?
+  url         String? @unique
+  status      String
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  categoryId BigInt? @map("category_id")
+  sourceId   BigInt? @map("source_id")
+
+  category Category? @relation("CategoryArticles", fields: [categoryId], references: [id], onDelete: SetNull)
+
+  @@map("articles")
 }

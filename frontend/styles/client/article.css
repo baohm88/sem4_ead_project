@@ -1,0 +1,189 @@
+/* ============================
+   GLOBAL TYPOGRAPHY
+============================ */
+.article-container {
+    max-width: 1140px;
+    margin: auto;
+    padding: 20px 16px;
+    display: grid;
+    grid-template-columns: 1fr 330px;
+    gap: 40px;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+@media (max-width: 1024px) {
+    .article-container {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* ============================
+   LEFT COLUMN
+============================ */
+.article-title {
+    font-size: 28px;
+    line-height: 1.3;
+    font-weight: 700;
+    color: #222;
+    margin-bottom: 12px;
+}
+
+.article-meta {
+    display: flex;
+    gap: 12px;
+    font-size: 14px;
+    color: #757575;
+    margin-bottom: 20px;
+}
+
+.article-summary {
+    font-size: 18px;
+    line-height: 1.5;
+    font-weight: 600;
+    color: #444;
+    margin-bottom: 20px;
+}
+
+.article-image {
+    width: 100%;
+    border-radius: 4px;
+    margin-bottom: 8px;
+}
+
+.article-caption {
+    font-size: 13px;
+    color: #666;
+    margin-bottom: 20px;
+}
+
+.article-content {
+    font-size: 17px;
+    line-height: 1.7;
+    color: #2b2b2b;
+}
+
+.article-content h2 {
+    font-size: 21px;
+    font-weight: bold;
+    margin: 20px 0 10px;
+}
+
+.article-content p {
+    margin: 14px 0;
+}
+
+.article-content img {
+    width: 100%;
+    margin: 20px 0;
+    border-radius: 4px;
+}
+
+.article-content blockquote {
+    padding-left: 16px;
+    border-left: 3px solid #c62828;
+    font-style: italic;
+    color: #444;
+    margin: 16px 0;
+}
+
+/* ============================
+   RELATED NEWS
+============================ */
+.related-box {
+    margin-top: 40px;
+}
+
+.related-title {
+    font-size: 20px;
+    font-weight: 700;
+    margin-bottom: 14px;
+}
+
+.related-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.related-list li {
+    margin-bottom: 10px;
+}
+
+.related-list a {
+    color: #0066cc;
+    font-size: 16px;
+    text-decoration: none;
+}
+
+.related-list a:hover {
+    text-decoration: underline;
+}
+
+/* ============================
+   COMMENT BOX
+============================ */
+.comment-box {
+    margin-top: 40px;
+}
+
+.comment-title {
+    font-size: 20px;
+    font-weight: 700;
+    margin-bottom: 14px;
+}
+
+.comment-textarea {
+    width: 100%;
+    border: 1px solid #dcdcdc;
+    border-radius: 4px;
+    padding: 10px;
+    font-size: 15px;
+}
+
+.comment-btn {
+    margin-top: 10px;
+    background: #c62828;
+    color: white;
+    padding: 10px 18px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.comment-btn:hover {
+    background: #b71c1c;
+}
+
+/* ============================
+   RIGHT SIDEBAR
+============================ */
+.sidebar-box {
+    border-top: 3px solid #c62828;
+    padding-top: 14px;
+    margin-bottom: 30px;
+}
+
+.sidebar-title {
+    font-size: 19px;
+    font-weight: 700;
+    margin-bottom: 10px;
+}
+
+.sidebar-list {
+    list-style: none;
+    padding: 0;
+}
+
+.sidebar-list li {
+    margin-bottom: 12px;
+}
+
+.sidebar-list a {
+    text-decoration: none;
+    font-size: 16px;
+    color: #222;
+}
+
+.sidebar-list a:hover {
+    color: #c62828;
+}
