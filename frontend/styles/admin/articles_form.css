@@ -1,0 +1,419 @@
+/* ============================================================
+   ARTICLE FORM — NEON GLASS STYLE (ĐỒNG BỘ VIEW + EDIT PAGE)
+============================================================ */
+
+/* Layout */
+.art-wrap {
+    max-width: 1000px;
+    margin: 40px auto;
+    padding: 0 20px;
+    font-family: "Inter", sans-serif;
+    animation: fadeIn .35s ease;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(8px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ============================================================
+   HEADER
+============================================================ */
+
+.art-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    margin-bottom: 28px;
+    padding: 14px 20px;
+
+    background: rgba(255,255,255,0.55);
+    border: 1px solid rgba(148,163,184,0.25);
+    backdrop-filter: blur(12px);
+    border-radius: 16px;
+
+    box-shadow:
+            0 4px 16px rgba(0,0,0,0.05),
+            0 2px 6px rgba(0,0,0,0.06);
+}
+
+/* Title gradient */
+.art-header-title {
+    font-size: 26px;
+    font-weight: 700;
+
+    background: linear-gradient(135deg, #3b82f6, #a855f7);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+/* ============================================================
+   BUTTON STYLE (Back / Save)
+============================================================ */
+
+.art-btn,
+.art-btn-save,
+.art-btn-back {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+
+    padding: 10px 18px;
+    border-radius: 12px;
+    font-size: 15px;
+    cursor: pointer;
+
+    background: rgba(255,255,255,0.55);
+    border: 1px solid rgba(148,163,184,0.25);
+    color: #475569;
+
+    backdrop-filter: blur(10px);
+    transition: transform .25s ease, box-shadow .25s ease, color .25s ease;
+}
+
+.art-btn:hover,
+.art-btn-back:hover,
+.art-btn-save:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 0 12px rgba(139,92,246,0.45);
+    color: #a78bfa;
+}
+
+/* Save = màu xanh */
+.art-btn-save {
+    background: linear-gradient(135deg, #3b82f6, #2563eb) !important;
+    color: #fff !important;
+    border: none !important;
+}
+.art-btn-save:hover {
+    box-shadow: 0 0 14px rgba(59,130,246,0.55);
+}
+
+/* ============================================================
+   CARD WRAP
+============================================================ */
+
+.art-form {
+    padding: 22px;
+    border-radius: 18px;
+
+    background: rgba(255,255,255,0.55);
+    border: 1px solid rgba(148,163,184,0.25);
+    backdrop-filter: blur(14px);
+
+    box-shadow:
+            0 4px 16px rgba(0,0,0,0.05),
+            0 2px 6px rgba(0,0,0,0.06);
+
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+/* ============================================================
+   GRID (2 cột)
+============================================================ */
+
+.art-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 22px;
+}
+
+@media (max-width: 720px) {
+    .art-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* ============================================================
+   FIELD
+============================================================ */
+
+.art-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.art-group label {
+    font-size: 14px;
+    font-weight: 600;
+    color: #64748b;
+}
+
+/* Input glass */
+.art-input,
+.art-textarea,
+.art-code {
+    padding: 14px 16px;
+    border-radius: 12px;
+
+    background: rgba(255,255,255,0.45);
+    border: 1px solid rgba(148,163,184,0.28);
+    backdrop-filter: blur(8px);
+
+    font-size: 15px;
+    color: #1e293b;
+
+    transition: .25s ease;
+}
+
+.art-input:focus,
+.art-textarea:focus,
+.art-code:focus {
+    outline: none;
+    border-color: #3b82f6;
+    box-shadow: 0 0 10px rgba(59,130,246,0.35);
+}
+
+/* Textarea */
+.art-textarea {
+    min-height: 140px;
+}
+
+/* Raw code */
+.art-code {
+    font-family: ui-monospace, Menlo, Consolas;
+    min-height: 180px;
+    white-space: pre-wrap;
+}
+
+/* ============================================================
+   SUBMIT BUTTON
+============================================================ */
+
+.art-submit {
+    padding: 14px 24px;
+    border-radius: 12px;
+
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 600;
+
+    background: linear-gradient(135deg, #6366f1, #4f46e5);
+    color: white;
+
+    transition: .25s ease;
+}
+
+.art-submit:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 0 14px rgba(99,102,241,0.45);
+}
+
+/* ============================================================
+   DELETE POPUP — ĐỒNG BỘ
+============================================================ */
+
+.neo-popup-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.55);
+    backdrop-filter: blur(2px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: neoFade .25s ease;
+    z-index: 9999;
+}
+
+@keyframes neoFade {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+}
+
+.neo-popup {
+    width: 380px;
+    padding: 28px;
+    border-radius: 18px;
+
+    background: #ffffff !important;
+    border: 1px solid #e2e8f0 !important;
+
+    box-shadow:
+            0 14px 32px rgba(0,0,0,0.18),
+            0 6px 14px rgba(0,0,0,0.08);
+
+    animation: neoScale .25s ease-out;
+    text-align: center;
+}
+
+@keyframes neoScale {
+    from { transform: scale(.92); opacity: 0; }
+    to   { transform: scale(1); opacity: 1; }
+}
+
+.neo-popup-icon {
+    width: 72px;
+    height: 72px;
+    border-radius: 50%;
+
+    background: #fee2e2 !important;
+    color: #dc2626 !important;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    margin: 0 auto 14px;
+}
+
+.neo-popup-icon svg {
+    width: 36px;
+    height: 36px;
+}
+
+.neo-popup h3 {
+    font-size: 22px;
+    font-weight: 800;
+    color: #111827 !important;
+    margin-bottom: 6px;
+}
+
+.neo-popup p {
+    color: #374151 !important;
+    margin-bottom: 16px;
+}
+
+.neo-popup-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+}
+
+.neo-cancel,
+.neo-delete {
+    padding: 10px 18px;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+.neo-cancel {
+    background: #f1f5f9 !important;
+    border: 1px solid #e2e8f0 !important;
+    color: #475569 !important;
+}
+.neo-cancel:hover {
+    background: #e2e8f0 !important;
+}
+
+.neo-delete {
+    background: #dc2626 !important;
+    color: #fff !important;
+    border: none !important;
+    box-shadow: 0 0 12px rgba(239,68,68,0.35);
+}
+.neo-delete:hover {
+    background: #b91c1c !important;
+}
+
+/* Responsive popup */
+@media (max-width: 640px) {
+    .neo-popup {
+        width: 92%;
+    }
+}
+/* ============================================================
+   ARTICLE FORM — HEADER (NEON GLASS + STICKY)
+============================================================ */
+
+.art-header {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    background: rgba(255,255,255,0.85);
+    backdrop-filter: blur(14px);
+
+    padding: 16px 22px;
+    margin-bottom: 24px;
+
+    border-radius: 14px;
+    border: 1px solid rgba(148,163,184,0.25);
+
+    box-shadow:
+            0 4px 12px rgba(0,0,0,0.05),
+            0 2px 7px rgba(0,0,0,0.06);
+
+    animation: fadeHeader .25s ease;
+}
+
+@keyframes fadeHeader {
+    from { opacity: 0; transform: translateY(-6px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+/* Gradient Title */
+.art-header-title {
+    font-size: 24px;
+    font-weight: 700;
+    background: linear-gradient(135deg, #3b82f6, #a855f7);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+/* Buttons container */
+.art-header-actions {
+    display: flex;
+    gap: 12px;
+}
+
+/* SHARED BUTTON STYLE */
+.art-btn-back,
+.art-btn-save {
+    padding: 10px 18px;
+    border-radius: 12px;
+
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+
+    border: none;
+    background: rgba(255,255,255,0.55);
+    color: #475569;
+
+    backdrop-filter: blur(10px);
+
+    transition:
+            transform .25s ease,
+            box-shadow .25s ease,
+            color .25s ease,
+            background .25s ease;
+}
+
+/* Hover glow */
+.art-btn-back:hover,
+.art-btn-save:hover {
+    transform: translateY(-2px);
+    color: #a855f7;
+    box-shadow:
+            0 0 14px rgba(139,92,246,.4),
+            0 0 14px rgba(59,130,246,.4);
+}
+
+/* BACK BUTTON */
+.art-btn-back {
+    background: #e2e8f0;
+    color: #1e293b;
+}
+.art-btn-back:hover {
+    box-shadow: 0 0 12px rgba(59,130,246,.35);
+}
+
+/* SAVE BUTTON */
+.art-btn-save {
+    background: linear-gradient(135deg, #6366f1, #4f46e5);
+    color: white !important;
+}
+.art-btn-save:hover {
+    box-shadow:
+            0 0 14px rgba(99,102,241,.55),
+            0 0 14px rgba(79,70,229,.45);
+}

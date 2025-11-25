@@ -1,0 +1,56 @@
+/* ========== GLOBAL LAYOUT ========== */
+
+.vn-app {
+    background: #fafafa;
+    color: #222;
+    font-family: "Roboto", sans-serif;
+    line-height: 1.55;
+}
+
+.vn-main {
+    padding-top: 16px;
+    padding-bottom: 40px;
+}
+
+.vn-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 12px;
+}
+
+/* Text defaults */
+h1, h2, h3, h4, h5 {
+    font-weight: 700;
+    line-height: 1.35;
+}
+
+a {
+    color: #222;
+    text-decoration: none;
+}
+
+a:hover {
+    color: #c90000;
+}
+
+/* Utility */
+.flex {
+    display: flex;
+}
+
+.center {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+    .vn-main {
+        padding: 12px 0 24px;
+    }
+
+    .vn-container {
+        padding: 0 10px;
+    }
+}
