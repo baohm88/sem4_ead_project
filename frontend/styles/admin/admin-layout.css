@@ -8,6 +8,19 @@
     color: #0f172a;
 }
 
+@media (min-width: 768px) {
+    .admin-layout {
+        /* Default mở rộng: 18rem (khoảng 288px) */
+        grid-template-columns: 18rem 1fr;
+        transition: grid-template-columns 0.3s ease; /* Thêm transition cho mượt */
+    }
+
+    /* Khi cha có class .collapsed thì thu cột trái về 4.5rem */
+    .admin-layout.collapsed {
+        grid-template-columns: 4.5rem 1fr !important;
+    }
+}
+
 /* Khu vực nội dung chính (bên phải trên desktop) */
 .admin-content {
     padding: 1rem;
@@ -39,7 +52,7 @@
 /* Desktop: có cột sidebar cố định 18rem + content */
 @media (min-width: 768px) {
     .admin-layout {
-        grid-template-columns: 18rem 1fr;
+        grid-template-columns: 18rem 1fr; /* Default sidebar rộng */
     }
 
     /* Khi sidebar ở vị trí static (desktop), content không cần padding trái */
@@ -51,5 +64,12 @@
     .admin-main {
         padding-left: 1.25rem;
         padding-right: 1.25rem;
+    }
+}
+
+/* ===== Optional: animation mượt khi thu gọn ===== */
+@media (min-width: 768px) {
+    .admin-layout {
+        transition: grid-template-columns 0.25s ease;
     }
 }

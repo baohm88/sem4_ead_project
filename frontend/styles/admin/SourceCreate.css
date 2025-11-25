@@ -1,0 +1,113 @@
+/*
+ * File này được thiết kế để áp dụng các quy tắc CSS TĂNG CƯỜNG
+ * cho SourceCreateForm để mô phỏng phong cách của catc-*.
+ *
+ * Lưu ý: Các class này KHÔNG XUNG ĐỘT với Tailwind CSS.
+ */
+
+/* ==================================== */
+/* 1. Reset/Tăng cường Input/Select */
+/* ==================================== */
+
+/* Áp dụng padding và border focus đồng nhất cho tất cả input và select trong form */
+.source-form input[type="text"],
+.source-form input[type="number"],
+.source-form select {
+    /* Đảm bảo chiều cao đồng nhất với catc-input: padding: 10px 12px */
+    padding-top: 10px;
+    padding-bottom: 10px;
+    padding-left: 12px;
+    padding-right: 12px;
+
+    /* Border và Focus style */
+    border: 1px solid #d1d5db; /* border-gray-300 */
+    border-radius: 6px; /* rounded-lg */
+
+    /* Focus: border-blue-500 và shadow */
+    transition: all 0.2s ease-in-out;
+}
+
+.source-form input[type="text"]:focus,
+.source-form input[type="number"]:focus,
+.source-form select:focus {
+    border-color: #2563eb; /* blue-600 */
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.2); /* ring-blue-500/20 */
+    outline: none;
+}
+
+/* ==================================== */
+/* 2. Style Nút Bấm (Buttons) */
+/* ==================================== */
+
+/* Nút Hủy (Secondary/Back) - Mô phỏng catc-btn-back */
+.source-btn-secondary {
+    padding: 10px 16px;
+    background: #f3f4f6; /* gray-100 */
+    border-radius: 6px;
+    color: #374151; /* gray-700 */
+    font-size: 15px;
+    font-weight: 500;
+    transition: 0.2s;
+}
+
+.source-btn-secondary:hover {
+    background: #e5e7eb; /* gray-200 */
+}
+
+/* Nút Primary (Preview Links) - Mô phỏng catc-btn-create */
+.source-btn-primary {
+    padding: 10px 16px;
+    background: #2563eb; /* blue-600 */
+    color: white;
+    border-radius: 6px;
+    font-size: 15px;
+    font-weight: 500;
+    transition: 0.2s;
+}
+
+.source-btn-primary:hover {
+    background: #1e3a8a; /* blue-800 */
+}
+
+/* Nút Save Source (Màu xanh lá) */
+.source-btn-save {
+    padding: 10px 16px;
+    background: #10b981; /* green-500 */
+    color: white;
+    border-radius: 6px;
+    font-size: 15px;
+    font-weight: 500;
+    transition: 0.2s;
+}
+
+.source-btn-save:hover {
+    background: #059669; /* green-600 */
+}
+
+/* Nút Preview Article (Bordered) */
+.source-btn-preview-article {
+    padding: 10px 16px;
+    border: 1px solid #2563eb; /* border-blue-600 */
+    color: #2563eb; /* text-blue-600 */
+    background: white;
+    border-radius: 6px;
+    font-size: 15px;
+    font-weight: 500;
+    transition: 0.2s;
+}
+
+.source-btn-preview-article:hover {
+    background: #eff6ff; /* blue-50 */
+}
+
+/* ==================================== */
+/* 3. Style Tiêu đề và Modal */
+/* ==================================== */
+
+/* Tiêu đề Modal (Mô phỏng catc-title) */
+.source-modal-title {
+    font-size: 24px; /* text-2xl */
+    font-weight: 600; /* font-semibold */
+    color: #111827; /* text-gray-900 */
+    margin-bottom: 24px; /* mb-6 */
+}
