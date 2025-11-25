@@ -36,4 +36,22 @@ public class ApiResponse<T> {
                 .data(null)
                 .build();
     }
+
+    // 🔥 NEW: fail(message, data)
+    public static <T> ApiResponse<T> fail(String message, T data) {
+        return ApiResponse.<T>builder()
+                .success(false)
+                .message(message)
+                .data(data)
+                .build();
+    }
+
+    // 🔥 NEW: fail(message) default
+    public static <T> ApiResponse<T> fail(String message) {
+        return ApiResponse.<T>builder()
+                .success(false)
+                .message(message)
+                .data(null)
+                .build();
+    }
 }

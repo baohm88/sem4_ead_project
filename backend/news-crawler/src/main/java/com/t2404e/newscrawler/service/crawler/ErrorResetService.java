@@ -4,6 +4,7 @@ import com.t2404e.newscrawler.entity.Article;
 import com.t2404e.newscrawler.entity.ArticleStatus;
 import com.t2404e.newscrawler.repository.ArticleRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -18,7 +19,10 @@ public class ErrorResetService {
      * Reset các bài ERROR thành NEW, nhưng giới hạn số lượng để tránh reset quá nhiều cùng lúc.
      */
     public int resetErrorToNewAndLimit(int limit) {
-        List<Article> errors = articleRepo.findByStatusLimited(ArticleStatus.ERROR.name(), limit);
+        List<Article> errors = articleRepo.findByStatusLimited(
+                ArticleStatus.ERROR,
+                PageRequest.of(0, limit)
+        );
 
         int reset = 0;
         for (Article a : errors) {
