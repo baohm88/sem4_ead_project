@@ -1,0 +1,44 @@
+/* ======================================================
+   FOOTER — VnExpress Style
+====================================================== */
+
+.vn-footer {
+    background: #fff;
+    border-top: 1px solid #e5e5e5;
+    padding: 26px 0;
+    margin-top: 40px;
+}
+
+.vn-footer-wrap {
+    text-align: center;
+    color: #666;
+    font-size: 14px;
+}
+
+.vn-footer-logo {
+    font-size: 26px;
+    font-weight: 800;
+    color: #c90000;
+    margin-bottom: 8px;
+}
+
+.vn-footer-desc {
+    margin-top: 8px;
+    margin-bottom: 4px;
+}
+
+.vn-footer-copy {
+    font-size: 13px;
+    color: #888;
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+    .vn-footer {
+        padding: 20px 0;
+    }
+
+    .vn-footer-logo {
+        font-size: 22px;
+    }
+}
