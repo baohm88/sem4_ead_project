@@ -42,3 +42,17 @@
         font-size: 22px;
     }
 }
+.tag-item {
+    background: #f2f2f2;
+    padding: 6px 10px;
+    border-radius: 4px;
+    font-size: 14px;
+    color: #333;
+    text-decoration: none;
+}
+
+.tag-item:hover {
+    background: #d00;
+    color: #fff;
+}
+

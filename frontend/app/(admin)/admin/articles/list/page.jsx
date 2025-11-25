@@ -41,7 +41,7 @@ export default function ArticlesList() {
     useEffect(() => {
         (async () => {
             try {
-                const res = await fetch("/api/articles", { cache: "no-store" });
+                const res = await fetch("/api/articles/list", { cache: "no-store" });
                 const data = await res.json();
                 setArticles(Array.isArray(data) ? data : []);
             } catch {
