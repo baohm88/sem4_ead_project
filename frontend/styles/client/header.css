@@ -1,0 +1,117 @@
+/* ======================================================
+   HEADER — VnExpress Style
+====================================================== */
+
+.vn-header {
+    width: 100%;
+    background: #fff;
+    border-bottom: 1px solid #e5e5e5;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+/* ===== TOPBAR ===== */
+
+.vn-topbar {
+    background: #fafafa;
+    border-bottom: 1px solid #eee;
+    padding: 6px 0;
+    font-size: 14px;
+}
+
+.vn-topbar-wrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.vn-top-left .vn-logo {
+    font-size: 28px;
+    font-weight: 800;
+    color: #c90000;
+    letter-spacing: -1px;
+}
+
+.vn-top-right a {
+    margin-left: 18px;
+    font-size: 14px;
+    color: #444;
+}
+
+.vn-top-right a:hover {
+    color: #c90000;
+}
+
+/* ===== NAVBAR ===== */
+
+.vn-navbar {
+    padding: 10px 0;
+    background: #fff;
+}
+
+.vn-nav-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+/* Hamburger button (Mobile) */
+.vn-menu-btn {
+    display: none;
+    background: none;
+    border: none;
+    font-size: 26px;
+    cursor: pointer;
+}
+
+/* Main Menu Desktop */
+.vn-menu {
+    display: flex;
+    gap: 22px;
+    font-size: 16px;
+    font-weight: 500;
+}
+
+.vn-menu li a {
+    padding: 6px 2px;
+    display: inline-block;
+    border-bottom: 2px solid transparent;
+    transition: 0.2s;
+}
+
+.vn-menu li a:hover {
+    color: #c90000;
+    border-color: #c90000;
+}
+
+/* ===== MOBILE ===== */
+@media (max-width: 768px) {
+    .vn-menu-btn {
+        display: block;
+    }
+
+    .vn-menu {
+        position: absolute;
+        top: 95px;
+        left: 0;
+        right: 0;
+
+        background: #fff;
+        border-top: 1px solid #eee;
+        padding: 20px 14px;
+        flex-direction: column;
+        gap: 18px;
+
+        display: none;
+    }
+
+    .vn-menu.open {
+        display: flex;
+    }
+
+    .vn-menu li a {
+        font-size: 18px;
+        padding: 10px 0;
+    }
+}

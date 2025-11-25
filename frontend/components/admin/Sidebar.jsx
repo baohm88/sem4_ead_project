@@ -12,7 +12,8 @@ import {
     MdClose,
     MdChevronLeft,
     MdChevronRight,
-    MdBallot,
+    MdBallot, MdArticle, MdSource,
+
 } from "react-icons/md";
 
 // 1. NHẬN PROPS TỪ CHA (AdminLayout)
@@ -25,12 +26,13 @@ export default function Sidebar({ collapsed, setCollapsed }) {
     // 2. XÓA DÒNG NÀY (Vì state giờ do AdminLayout quản lý)
     // const [collapsed, setCollapsed] = useState(false);
 
-    const navItems = [
-        { name: "Dashboard", href: "/admin", icon: MdDashboard },
-        { name: "Categories", href: "/admin/categories/list", icon: MdCategory },
-        { name: "Sources", href: "/admin/sources", icon: MdCategory },
-        { name: "Client", href: "/", icon: MdBallot },
-    ];
+  const navItems = [
+    { name: "Dashboard", href: "/admin", icon: MdDashboard },
+    { name: "Categories", href: "/admin/categories/list", icon: MdCategory },
+    { name: "Artiles", href: "/admin/articles/list", icon: MdArticle },
+    { name: "Sources", href: "/admin/sources", icon: MdSource },
+    { name: "Client", href: "/", icon: MdBallot },
+  ];
 
     return (
         <>
