@@ -19,15 +19,20 @@ public class SourceController {
     public SourceController(SourceService sourceService) {
         this.sourceService = sourceService;
     }
-
+    // 🔹 GET all
     @GetMapping
     public ApiResponse<List<SourceResponse>> getAll() {
         return ApiResponse.success(sourceService.getAll());
     }
-
+    // 🔹 GET by category
     @GetMapping("/category/{categoryId}")
     public ApiResponse<List<Source>> getByCategory(@PathVariable Long categoryId) {
         return ApiResponse.success(sourceService.getByCategory(categoryId));
+    }
+    // 🔹 GET by id (cho Edit)
+    @GetMapping("/{id}")
+    public ApiResponse<Source> getOne(@PathVariable Long id) {
+        return ApiResponse.success(sourceService.getById(id));
     }
 
     @PostMapping

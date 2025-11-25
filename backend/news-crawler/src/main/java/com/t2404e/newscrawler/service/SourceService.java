@@ -32,6 +32,11 @@ public class SourceService {
                 .toList();
     }
 
+    public Source getById(Long id) {
+        return sourceRepo.findById(id)
+                .orElseThrow(() -> new RuntimeException("Source not found"));
+    }
+
     public List<Source> getByCategory(Long categoryId) {
         return sourceRepo.findByArticleCategory_Id(categoryId);
     }
