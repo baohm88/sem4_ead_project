@@ -2,6 +2,7 @@ package com.t2404e.newscrawler.controller;
 
 import com.t2404e.newscrawler.dto.ApiResponse;
 import com.t2404e.newscrawler.dto.ErrorResponse;
+import com.t2404e.newscrawler.dto.PageResponse;
 import com.t2404e.newscrawler.entity.Article;
 import com.t2404e.newscrawler.repository.ArticleRepository;
 import com.t2404e.newscrawler.service.ArticleService;
@@ -12,7 +13,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
-import java.util.List;
 
 @Tag(name = "Article Management", description = "CRUD cho bài viết")
 @CrossOrigin(origins = "*")
@@ -25,16 +25,29 @@ public class ArticleController {
     private final ArticleService articleService;
 
     // ===================== GET ALL ==============================
-    @GetMapping
-    public ResponseEntity<ApiResponse<List<Article>>> getAll() {
-        List<Article> list = articleRepo.findAll();
-        return ResponseEntity.ok(
-                ApiResponse.<List<Article>>builder()
-                        .success(true)
-                        .message("Lấy danh sách bài viết thành công")
-                        .data(list)
-                        .build()
-        );
+    // ADMIN – XEM TẤT CẢ
+    @GetMapping("/admin")
+    public ApiResponse<PageResponse<Article>> getAllArticles(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "") String keyword,
+            @RequestParam(defaultValue = "createdAt") String sortBy,
+            @RequestParam(defaultValue = "DESC") String direction
+    ) {
+        return ApiResponse.success(articleService.getAllArticles(page, size, keyword, sortBy, direction));
+    }
+
+
+    // CLIENT – CHỈ THẤY CRAWLED
+    @GetMapping("/public")
+    public ApiResponse<PageResponse<Article>> getPublicArticles(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "5") int size,
+            @RequestParam(defaultValue = "") String keyword,
+            @RequestParam(defaultValue = "createdAt") String sortBy,
+            @RequestParam(defaultValue = "DESC") String direction
+    ) {
+        return ApiResponse.success(articleService.getCrawledArticles(page, size, keyword, sortBy, direction));
     }
 
     // ===================== GET ONE ==============================

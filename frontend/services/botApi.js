@@ -4,4 +4,10 @@ import { api } from "./api";
 export const fetchBotStatuses = () => api.get("/bots");
 
 // Chạy BOT theo code: "bot1" | "bot2" | "bot3"
-export const runBot = (botCode) => api.post(`/bots/${botCode}/run`);
+export const runBot = (botCode) => {
+  return api.post(
+    `/bots/${botCode}/run`,
+    {},
+    botCode === "bot2" ? { timeout: 0 } : {}
+  );
+};

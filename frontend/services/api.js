@@ -5,15 +5,15 @@ const API_BASE = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8080/api/v
 // 👇 Tạo instance axios
 export const api = axios.create({
   baseURL: API_BASE,
-  timeout: 10000, // 10s tránh treo UI
+  timeout: 60000, // 10s tránh treo UI
 });
 
 // 👇 Response Interceptor: luôn trả về response.data.data
 api.interceptors.response.use(
   (response) => {
     // API dạng {success, message, data}
-    if (response?.data?.data !== undefined) return response.data.data;
-    return response.data;
+    if (response?.data !== undefined) return response.data;
+    return response;
   },
   (error) => {
     console.error("❌ API Error:", error.response || error.message);
