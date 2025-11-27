@@ -28,9 +28,9 @@ export default function Sidebar({ collapsed, setCollapsed }) {
 
   const navItems = [
     { name: "Dashboard", href: "/admin", icon: MdDashboard },
-    { name: "Categories", href: "/admin/categories/list", icon: MdCategory },
-    { name: "Artiles", href: "/admin/articles/list", icon: MdArticle },
+    { name: "Categories", href: "/admin/categories", icon: MdCategory },
     { name: "Sources", href: "/admin/sources", icon: MdSource },
+    { name: "Articles", href: "/admin/articles/list", icon: MdArticle },
     { name: "Client", href: "/", icon: MdBallot },
   ];
 

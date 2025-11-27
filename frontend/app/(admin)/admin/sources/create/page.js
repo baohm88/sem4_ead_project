@@ -1,4 +1,4 @@
-"use client";
+import SourceFormPage from "@/components/admin/SourceForm";
 
 import { useRouter } from "next/navigation";
 import { createSource } from "@/services/sourceApi";
