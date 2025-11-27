@@ -3,8 +3,8 @@
 import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import Card from "@/components/admin/Card";
-import "@/styles/admin/articles.css";
-import "@/styles/admin/categories.css";
+import "@/styles/admin/article-list.css";
+
 
 function TooltipText({ text }) {
     const [show, setShow] = useState(false);

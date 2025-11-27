@@ -1,76 +1,73 @@
 "use client";
-import { useEffect, useState } from "react";
-import SourceTable from "../../../../components/admin/SourceTable";
-import SourceModal from "../../../../components/admin/SourceModal";
 
-import {
-  getSources,
-  createSource,
-  updateSource,
-  deleteSource,
-} from "../../../../services/sourceApi";
+import { useEffect, useState } from "react";
+import SourceTable from "@/components/admin/SourceTable";
+import { getSources, deleteSource } from "@/services/sourceApi";
+import { useRouter } from "next/navigation";
+import { toast } from "react-toastify";
+
+import "@/styles/admin/source-list.css";
 
 export default function SourcesPage() {
-  const [sources, setSources] = useState([]);
-  const [modalOpen, setModalOpen] = useState(false);
-  const [editData, setEditData] = useState(null);
+    const [sources, setSources] = useState([]);
+    const router = useRouter();
 
-  console.log("edit data: ", editData);
+    const load = async () => {
+        const data = await getSources();
+        setSources(data);
+    };
+    const IconEdit = () => (
+        <svg className="neo-icon" viewBox="0 0 24 24">
+            <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25z" />
+        </svg>
+    );
+    const IconDelete = () => (
+        <svg className="neo-icon" viewBox="0 0 24 24">
+            <path d="M6 7h12M10 11v6M14 11v6M9 7l1-2h4l1 2M5 7h14l-1 13H6L5 7z" />
+        </svg>
+    );
+    useEffect(() => {
+        load();
+    }, []);
 
-  const load = async () => {
-    const data = await getSources();
-    setSources(data);
-  };
+    const handleDelete = async (id) => {
+        if (!confirm("Delete this source?")) return;
 
-  useEffect(() => {
-    load();
-  }, []);
+        try {
+            await deleteSource(id);
+            toast.success("Deleted successfully!");
+            load();
+        } catch (err) {
+            toast.error("Delete failed!");
+        }
+    };
 
-  const handleSave = async (form) => {
-    if (editData) await updateSource(editData.id, form);
-    else await createSource(form);
-    setModalOpen(false);
-    setEditData(null);
-    load();
-  };
+    return (
+        <div className="source-wrap">
+            <div className="source-header">
+                <h1 className="source-title">Sources Manager</h1>
 
-  const handleDelete = async (id) => {
-    if (confirm("Delete this source?")) {
-      await deleteSource(id);
-      load();
-    }
-  };
+                <button
+                    className="source-btn-add"
+                    onClick={() => router.push("/admin/sources/create")}
+                >
+                    + Add Source
+                </button>
+            </div>
 
-  return (
-    <div className="p-6">
-      <div className="flex justify-between mb-4">
-        <h1 className="text-2xl font-bold">Sources Manager</h1>
-        <button
-          className="bg-blue-600 text-white px-4 py-2 rounded"
-          onClick={() => setModalOpen(true)}
-        >
-          + Add Source
-        </button>
-      </div>
-
-      <SourceTable
-        sources={sources}
-        onEdit={(src) => {
-          setEditData(src);
-          setModalOpen(true);
-        }}
-        onDelete={handleDelete}
-      />
-
-      <SourceModal
-        show={modalOpen}
-        data={editData}
-        onClose={() => {
-          setModalOpen(false);
-          setEditData(null);
-        }}
-        onSubmit={handleSave}
-      />
-    </div>
-  );
+            <div className="source-card">
+                <div className="source-table-wrap">
+                    <SourceTable
+                        IconEdit={IconEdit}
+                        IconDelete={IconDelete}
+                        sources={sources}
+                        onEdit={(src) =>
+                            router.push(`/admin/sources/${src.id}/edit`)
+                        }
+                        onDelete={handleDelete}
+                    />
+                </div>
+            </div>
+        </div>
+    );
 }

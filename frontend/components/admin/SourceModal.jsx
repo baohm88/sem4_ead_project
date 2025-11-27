@@ -1,235 +1,104 @@
 "use client";
 
-
-
 import { useEffect, useState } from "react";
-
 import { fetchCategories } from "@/services/categoryApi";
-
 import { previewLinks, previewArticle } from "@/services/sourceApi"; // path tuỳ bạn
-
-
-
 export default function SourceModal({ show, data, onClose, onSubmit }) {
-
     console.log("modal data:",data);
-
-
-
     const [step, setStep] = useState(1);
-
     const [categories, setCategories] = useState([]);
-
-
-
     const [form, setForm] = useState({
-
         title: "",
-
         domain: "",
-
         path: "",
-
         linkSelector: "",
-
         titleSelector: "",
-
         descriptionSelector: "",
-
         contentSelector: "",
-
         imageSelector: "",
-
         removeSelector: "",
-
         categoryId: "",
-
         status: 1,
-
         limit: 5, // [1] THÊM LIMIT VÀO STATE
-
     });
-
-
-
     const [links, setLinks] = useState([]);
-
     const [selectedUrl, setSelectedUrl] = useState("");
-
     const [articlePreview, setArticlePreview] = useState(null);
-
-
-
     /** ========== Load categories khi mở modal ========== */
-
     useEffect(() => {
-
         if (!show) return;
-
         fetchCategories().then((res) => {
-
             setCategories(res || []);
-
         });
-
     }, [show]);
-
-
-
     /** ========== Khi mở modal / edit ========== */
-
     useEffect(() => {
-
         if (!show) return;
-
-
-
         if (data) {
-
 // Edit mode
-
             setStep(1);
-
             setLinks([]);
-
             setSelectedUrl("");
-
             setArticlePreview(null);
-
-
-
             setForm((prev) => ({
-
                 ...prev,
-
                 ...data,
-
                 categoryId: data.categoryId || "",
-
                 limit: data.limit ?? 5, // [2] LẤY GIÁ TRỊ CŨ KHI EDIT
-
             }));
-
         } else {
-
 // Add mode
-
             setStep(1);
-
             setLinks([]);
-
             setSelectedUrl("");
-
             setArticlePreview(null);
-
-
-
             setForm({
-
                 title: "",
-
                 domain: "",
-
                 path: "",
-
                 linkSelector: "",
-
                 titleSelector: "",
-
                 descriptionSelector: "",
-
                 contentSelector: "",
-
                 imageSelector: "",
-
                 removeSelector: "",
-
                 categoryId: "",
-
                 status: 1,
-
                 limit: 5, // [2] Đảm bảo limit có trong add mode
-
             });
-
         }
-
     }, [data, show]);
-
-
-
     /** ========== Close modal ========== */
-
     if (!show) return null;
-
-
-
     /** ========== Change input ========== */
-
     const handleChange = (e) => {
-
         const { name, value } = e.target;
-
 // Đảm bảo limit được chuyển thành số
-
         setForm({
-
             ...form,
-
             [name]: name === 'limit' ? Number(value) : value
-
         });
-
     };
-
-
-
     /** ========== Step 1: Preview Links ========== */
-
     const handlePreviewLinks = async () => {
-
         if (!form.domain || !form.path || !form.linkSelector) {
-
             alert("Vui lòng nhập domain, path và linkSelector trước.");
-
             return;
-
         }
-
-
-
         try {
-
             const res = await previewLinks({
-
                 domain: form.domain,
-
                 path: form.path,
-
                 linkSelector: form.linkSelector,
-
                 limit: Number(form.limit), // [4] SỬ DỤNG form.limit
-
             });
-
-
-
             const list = res || [];
-
             if (!list.length) {
-
                 alert("Không tìm thấy link nào với selector này.");
-
                 return;
-
             }
-
-
-
             setLinks(list);
-
             setSelectedUrl(list[0]);
-
             setStep(2);
 
         } catch (err) {
@@ -633,221 +502,112 @@ export default function SourceModal({ show, data, onClose, onSubmit }) {
                             </div>
 
 
-
                             {/* Title */}
-
                             <div>
-
                                 <label className="block font-semibold mb-1">
-
                                     Source Title (hiển thị trong admin)
-
                                 </label>
-
                                 <input
-
                                     name="title"
-
                                     value={form.title}
-
                                     onChange={handleChange}
-
                                     className="border p-2 rounded w-full"
-
                                     placeholder="VnExpress - Thể thao"
-
                                 />
-
                             </div>
-
-
-
                             {/* Article selectors */}
-
                             {[
-
                                 "titleSelector",
-
                                 "descriptionSelector",
-
                                 "contentSelector",
-
                                 "imageSelector",
-
                                 "removeSelector",
-
                             ].map((key) => (
-
                                 <div key={key}>
-
                                     <label className="block font-semibold mb-1 capitalize">
-
                                         {key}
-
                                     </label>
-
                                     <input
-
                                         name={key}
-
                                         value={form[key] ?? ""}
-
                                         onChange={handleChange}
-
                                         className="border p-2 rounded w-full"
-
                                         placeholder={
-
                                             key === "contentSelector" ? "article.fck_detail" : ""
-
                                         }
-
                                     />
-
                                 </div>
-
                             ))}
 
-
-
                             {/* Status */}
-
                             <div>
-
                                 <label className="block font-semibold mb-1">Status</label>
-
                                 <select
-
                                     name="status"
-
                                     value={form.status}
-
                                     onChange={handleChange}
-
                                     className="border p-2 rounded w-full"
-
                                 >
-
                                     <option value={1}>Active</option>
-
                                     <option value={0}>Inactive</option>
-
                                 </select>
-
                             </div>
-
 
 
                             {/* Buttons + Preview article */}
-
                             <div className="flex justify-between items-center mt-4">
-
                                 <button
-
                                     type="button"
-
-                                    className="px-4 py-2 rounded border"
+                                    className="px-4 y-2 rounded border"
 
                                     onClick={onClose}
-
                                 >
-
                                     Cancel
-
                                 </button>
-
                                 <div className="flex gap-3">
-
                                     <button
-
                                         type="button"
-
                                         className="px-4 py-2 rounded border border-blue-600 text-blue-600"
-
                                         onClick={handlePreviewArticle}
-
                                     >
-
                                         Preview Article
-
                                     </button>
-
                                     <button
-
                                         type="submit"
-
                                         className="px-4 py-2 rounded bg-green-600 text-white"
-
                                     >
-
                                         Save Source
-
                                     </button>
-
                                 </div>
-
                             </div>
-
-
-
                             {/* Article Preview */}
-
                             {articlePreview && (
-
                                 <div className="mt-4 border rounded p-3 bg-gray-50">
-
                                     <div className="font-semibold mb-1">
-
                                         {articlePreview.title || "(no title)"}
-
                                     </div>
-
                                     <div className="text-sm text-gray-600 mb-2">
-
                                         {articlePreview.description}
-
                                     </div>
-
                                     {articlePreview.imageUrl && (
-
                                         <img
-
                                             src={articlePreview.imageUrl}
-
                                             alt=""
-
                                             className="max-w-sm mb-2 rounded"
-
                                         />
-
                                     )}
-
                                     <div
-
                                         className="prose max-w-none text-sm"
-
                                         dangerouslySetInnerHTML={{
-
                                             __html: articlePreview.contentHtml?.slice(0, 1000) || "",
-
                                         }}
-
                                     />
-
                                 </div>
-
                             )}
-
                         </>
-
                     )}
-
                 </form>
-
             </div>
-
         </div>
-
     );
-
 }
