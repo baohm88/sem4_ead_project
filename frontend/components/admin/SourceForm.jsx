@@ -1,484 +1,621 @@
+// "use client";
+//
+// import { useEffect, useState } from "react";
+// import { previewLinks, previewArticle } from "@/services/sourceApi";
+// import { fetchCategories } from "@/services/categoryApi";
+// import { toast } from "react-toastify";
+//
+// import "@/styles/admin/source-form.css"; // 👈 Gắn CSS vừa tạo
+//
+// export default function SourceForm({ editing, onSaved }) {
+//     const [step, setStep] = useState(1);
+//
+//     const [categories, setCategories] = useState([]);
+//     const [links, setLinks] = useState([]);
+//     const [selectedUrl, setSelectedUrl] = useState("");
+//     const [articlePreview, setArticlePreview] = useState(null);
+//
+//     const empty = {
+//         title: "",
+//         domain: "",
+//         path: "",
+//         linkSelector: "",
+//         titleSelector: "",
+//         descriptionSelector: "",
+//         contentSelector: "",
+//         imageSelector: "",
+//         removeSelector: "",
+//         categoryId: "",
+//         status: 1,
+//         limit: 5,
+//     };
+//
+//     const [form, setForm] = useState(empty);
+//
+//     /* LOAD CATEGORY */
+//     useEffect(() => {
+//         fetchCategories().then((res) => setCategories(res || []));
+//     }, []);
+//
+//     /* IF EDIT → FILL DATA */
+//     useEffect(() => {
+//         if (!editing) return setForm(empty);
+//
+//         setForm({
+//             ...empty,
+//             ...editing,
+//             categoryId: editing.articleCategory?.id || editing.categoryId || "",
+//             limit: editing.limit ?? 5,
+//         });
+//     }, [editing]);
+//
+//     /* INPUT HANDLE */
+//     const handleChange = (e) => {
+//         const { name, value } = e.target;
+//
+//         setForm((prev) => ({
+//             ...prev,
+//             [name]: ["limit", "status"].includes(name) ? Number(value) : value,
+//         }));
+//     };
+//
+//     /* STEP 1 → PREVIEW LINKS */
+//     const handlePreviewLinks = async () => {
+//         try {
+//             const res = await previewLinks({
+//                 domain: form.domain,
+//                 path: form.path,
+//                 linkSelector: form.linkSelector,
+//                 limit: form.limit,
+//             });
+//
+//             if (!res?.length) {
+//                 toast.warn("Không tìm thấy link nào!");
+//                 return;
+//             }
+//
+//             setLinks(res);
+//             setSelectedUrl(res[0]);
+//             setStep(2);
+//             toast.success("Lấy danh sách links thành công!");
+//         } catch (err) {
+//             console.error(err);
+//             toast.error("Preview links thất bại!");
+//         }
+//     };
+//
+//     /* STEP 2 → PREVIEW ARTICLE */
+//     const handlePreviewArticle = async () => {
+//         try {
+//             const res = await previewArticle({
+//                 url: selectedUrl,
+//                 titleSelector: form.titleSelector,
+//                 descriptionSelector: form.descriptionSelector,
+//                 contentSelector: form.contentSelector,
+//                 imageSelector: form.imageSelector,
+//                 removeSelector: form.removeSelector,
+//             });
+//
+//             setArticlePreview(res);
+//             toast.success("Preview bài viết thành công!");
+//         } catch (err) {
+//             console.error(err);
+//             toast.error("Preview article thất bại!");
+//         }
+//     };
+//
+//     /* SAVE */
+//     const handleSave = (e) => {
+//         e.preventDefault();
+//         onSaved(form);
+//     };
+//
+//     /* Selector Fields */
+//     const selectorFields = [
+//         "titleSelector",
+//         "descriptionSelector",
+//         "contentSelector",
+//         "imageSelector",
+//         "removeSelector",
+//     ];
+//
+//     return (
+//         <div className="source-wrap">
+//             {/* TITLE */}
+//             <h1 className="source-title">
+//                 {editing ? "✏️ Edit Source" : "➕ Add New Source"}
+//             </h1>
+//
+//             {/* STEPS */}
+//             <div className="source-steps">
+//                 <div className={`source-step ${step === 1 ? "active" : ""}`}>
+//                     <strong>Bước 1</strong>
+//                     <div className="text-sm text-gray-600">
+//                         Cấu hình domain & link selectors
+//                     </div>
+//                 </div>
+//
+//                 <div className={`source-step ${step === 2 ? "active" : ""}`}>
+//                     <strong>Bước 2</strong>
+//                     <div className="text-sm text-gray-600">
+//                         Preview nội dung bài viết
+//                     </div>
+//                 </div>
+//             </div>
+//
+//             {/* CARD */}
+//             <div className="source-card">
+//                 <form onSubmit={handleSave} className="source-form">
+//                     {/* ================= STEP 1 ================= */}
+//                     {step === 1 && (
+//                         <>
+//                             <FormField label="Category">
+//                                 <select
+//                                     name="categoryId"
+//                                     value={form.categoryId}
+//                                     onChange={handleChange}
+//                                     className="source-input"
+//                                 >
+//                                     <option value="">-- Select Category --</option>
+//                                     {categories.map((c) => (
+//                                         <option key={c.id} value={c.id}>
+//                                             {c.name}
+//                                         </option>
+//                                     ))}
+//                                 </select>
+//                             </FormField>
+//
+//                             <FormField label="Domain">
+//                                 <input
+//                                     name="domain"
+//                                     value={form.domain}
+//                                     onChange={handleChange}
+//                                     className="source-input"
+//                                     placeholder="https://vnexpress.net"
+//                                 />
+//                             </FormField>
+//
+//                             <FormField label="Path">
+//                                 <input
+//                                     name="path"
+//                                     value={form.path}
+//                                     onChange={handleChange}
+//                                     className="source-input"
+//                                     placeholder="/the-thao"
+//                                 />
+//                             </FormField>
+//
+//                             <FormField label="Link Selector">
+//                                 <input
+//                                     name="linkSelector"
+//                                     value={form.linkSelector}
+//                                     onChange={handleChange}
+//                                     className="source-input"
+//                                     placeholder="article a"
+//                                 />
+//                             </FormField>
+//
+//                             <FormField label="Preview Limit">
+//                                 <input
+//                                     type="number"
+//                                     name="limit"
+//                                     min="1"
+//                                     value={form.limit}
+//                                     onChange={handleChange}
+//                                     className="source-input"
+//                                 />
+//                             </FormField>
+//
+//                             <div className="source-btn-row">
+//                                 <button
+//                                     type="button"
+//                                     onClick={handlePreviewLinks}
+//                                     className="source-btn-preview"
+//                                 >
+//                                     Preview Links →
+//                                 </button>
+//                             </div>
+//                         </>
+//                     )}
+//
+//                     {/* ================= STEP 2 ================= */}
+//                     {step === 2 && (
+//                         <>
+//                             <button
+//                                 type="button"
+//                                 className="source-btn-back"
+//                                 onClick={() => setStep(1)}
+//                             >
+//                                 ← Quay lại Bước 1
+//                             </button>
+//
+//                             {/* LINK LIST */}
+//                             <FormField label="Preview Links">
+//                                 <div className="source-links-box">
+//                                     {links.map((link) => (
+//                                         <div
+//                                             key={link}
+//                                             onClick={() => setSelectedUrl(link)}
+//                                             className={`source-link-item ${
+//                                                 selectedUrl === link ? "active" : ""
+//                                             }`}
+//                                         >
+//                                             {link}
+//                                         </div>
+//                                     ))}
+//                                 </div>
+//                             </FormField>
+//
+//                             <FormField label="Source Title (hiển thị trong admin)">
+//                                 <input
+//                                     name="title"
+//                                     value={form.title}
+//                                     onChange={handleChange}
+//                                     className="source-input"
+//                                     placeholder="VD: VnExpress - Thể thao"
+//                                 />
+//                             </FormField>
+//
+//                             {/* Selector fields */}
+//                             {selectorFields.map((key) => (
+//                                 <FormField label={key} key={key}>
+//                                     <input
+//                                         name={key}
+//                                         value={form[key] || ""}
+//                                         onChange={handleChange}
+//                                         className="source-input"
+//                                     />
+//                                 </FormField>
+//                             ))}
+//
+//                             {/* ACTION BUTTONS */}
+//                             <div className="source-btn-row">
+//                                 <button
+//                                     type="button"
+//                                     onClick={handlePreviewArticle}
+//                                     className="source-btn-preview"
+//                                 >
+//                                     Preview Article
+//                                 </button>
+//
+//                                 <button type="submit" className="source-btn-save">
+//                                     Save Source
+//                                 </button>
+//                             </div>
+//
+//                             {/* ARTICLE PREVIEW */}
+//                             {articlePreview && (
+//                                 <div className="source-article-preview">
+//                                     <h3>{articlePreview.title}</h3>
+//                                     <p>{articlePreview.description}</p>
+//
+//                                     {articlePreview.imageUrl && (
+//                                         <img
+//                                             src={articlePreview.imageUrl}
+//                                             className="source-preview-img"
+//                                         />
+//                                     )}
+//
+//                                     <div
+//                                         className="prose text-sm max-w-none"
+//                                         dangerouslySetInnerHTML={{
+//                                             __html: articlePreview.contentHtml?.slice(0, 2000),
+//                                         }}
+//                                     />
+//                                 </div>
+//                             )}
+//                         </>
+//                     )}
+//                 </form>
+//             </div>
+//         </div>
+//     );
+// }
+//
+// /* FIELD WRAPPER */
+// function FormField({ label, children }) {
+//     return (
+//         <div className="source-field">
+//             <label>{label}</label>
+//             {children}
+//         </div>
+//     );
+// }
+
+
 "use client";
 
-import { useEffect, useState, useCallback } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useEffect, useState } from "react";
+import { previewLinks, previewArticle } from "@/services/sourceApi";
 import { fetchCategories } from "@/services/categoryApi";
-import {
-  getSourceById,
-  createSource,
-  updateSource,
-  previewLinks,
-  previewArticle,
-} from "@/services/sourceApi";
 import { toast } from "react-toastify";
+import "@/styles/admin/source-form.css";
 
-const initialForm = {
-  title: "",
-  domain: "",
-  path: "",
-  linkSelector: "",
-  titleSelector: "",
-  descriptionSelector: "",
-  contentSelector: "",
-  imageSelector: "",
-  removeSelector: "",
-  categoryId: "",
-  status: 1,
-  limit: 5,
-};
+export default function SourceForm({ editing, onSaved }) {
+    const [step, setStep] = useState(1);
 
-export default function SourceFormPage({ editData }) {
-  const router = useRouter();
-  const isEdit = !!editData;
-  const [categories, setCategories] = useState([]);
-  const [form, setForm] = useState(initialForm);
+    const [categories, setCategories] = useState([]);
+    const [links, setLinks] = useState([]);
+    const [selectedUrl, setSelectedUrl] = useState("");
+    const [articlePreview, setArticlePreview] = useState(null);
 
-  const [links, setLinks] = useState([]);
-  const [selectedUrl, setSelectedUrl] = useState("");
-  const [articlePreview, setArticlePreview] = useState(null);
-
-  const [linkLoading, setLinkLoading] = useState(false);
-  const [articleLoading, setArticleLoading] = useState(false);
-  const [saving, setSaving] = useState(false);
-
-  const [linkStatus, setLinkStatus] = useState(""); // UX extra
-  const [articleStatus, setArticleStatus] = useState("");
-
-  /** ===== Load categories + source (nếu edit) ===== */
-  useEffect(() => {
-    const loadInit = async () => {
-      try {
-        const cats = await fetchCategories();
-        setCategories(cats || []);
-
-        if (editData) {
-          setForm({
-            ...initialForm,
-            ...editData,
-            categoryId: editData.categoryId ?? "",
-            limit: 5,
-          });
-        }
-      } catch (e) {
-        console.error(e);
-        toast.error("Load data lỗi");
-      }
+    const emptyForm = {
+        title: "",
+        domain: "",
+        path: "",
+        linkSelector: "",
+        titleSelector: "",
+        descriptionSelector: "",
+        contentSelector: "",
+        imageSelector: "",
+        removeSelector: "",
+        categoryId: "",
+        status: 1,
+        limit: 5,
     };
 
-    loadInit();
-  }, [editData]);
+    const [form, setForm] = useState(emptyForm);
 
-  /** ===== Change input ===== */
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setForm((prev) => ({
-      ...prev,
-      [name]: name === "limit" ? Number(value) : value,
-    }));
-  };
+    /** LOAD CATEGORIES */
+    useEffect(() => {
+        fetchCategories().then((res) => setCategories(res || []));
+    }, []);
 
-  /** ===== Preview Links ===== */
-  const handlePreviewLinks = useCallback(async () => {
-    if (!form.domain || !form.path || !form.linkSelector) {
-      toast.error("Vui lòng nhập domain, path và linkSelector trước.");
-      return;
-    }
+    /** IF EDIT */
+    useEffect(() => {
+        if (editing) {
+            setForm({
+                ...emptyForm,
+                ...editing,
+                categoryId: editing.articleCategory?.id || editing.categoryId || "",
+            });
+        } else setForm(emptyForm);
+    }, [editing]);
 
-    setLinkLoading(true);
-    setLinkStatus("Đang crawl links...");
+    const handleChange = (e) => {
+        const { name, value } = e.target;
 
-    try {
-      const res = await previewLinks({
-        domain: form.domain,
-        path: form.path,
-        linkSelector: form.linkSelector,
-        limit: Number(form.limit) || 5,
-      });
+        setForm((prev) => ({
+            ...prev,
+            [name]: name === "limit" || name === "status" ? Number(value) : value,
+        }));
+    };
 
-      const list = res.data || res; // tuỳ backend (nếu trả raw list, res.data undefined)
+    /** STEP 1 → Preview Links */
+    const handlePreviewLinks = async () => {
+        try {
+            const res = await previewLinks({
+                domain: form.domain,
+                path: form.path,
+                linkSelector: form.linkSelector,
+                limit: form.limit,
+            });
 
-      const finalList = Array.isArray(list) ? list : [];
-      if (!finalList.length) {
-        setLinks([]);
-        setSelectedUrl("");
-        setLinkStatus("Không tìm thấy link nào.");
-        toast.error("Không tìm thấy link nào với selector này.");
-        return;
-      }
+            setLinks(res || []);
+            setSelectedUrl((res || [])[0]);
+            setStep(2);
+        } catch (err) {
+            toast.error("Preview links failed!");
+        }
+    };
 
-      setLinks(finalList);
-      setSelectedUrl(finalList[0]);
-      setLinkStatus(`Tìm thấy ${finalList.length} link.`);
-    } catch (err) {
-      console.error(err);
-      setLinkStatus("Preview links lỗi.");
-      toast.error("Preview links lỗi, kiểm tra lại selector / domain / path.");
-    } finally {
-      setLinkLoading(false);
-    }
-  }, [form]);
+    /** STEP 2 → Preview Article */
+    const handlePreviewArticle = async () => {
+        try {
+            const res = await previewArticle({
+                url: selectedUrl,
+                titleSelector: form.titleSelector,
+                descriptionSelector: form.descriptionSelector,
+                contentSelector: form.contentSelector,
+                imageSelector: form.imageSelector,
+                removeSelector: form.removeSelector,
+            });
 
-  /** ===== Preview Article ===== */
-  const handlePreviewArticle = useCallback(async () => {
-    if (!selectedUrl) {
-      toast.error("Vui lòng chọn 1 article link.");
-      return;
-    }
-    if (!form.contentSelector) {
-      toast.error("Cần nhập contentSelector để crawl nội dung.");
-      return;
-    }
+            setArticlePreview(res);
+        } catch (err) {
+            toast.error("Preview article failed!");
+        }
+    };
 
-    setArticleLoading(true);
-    setArticleStatus("Đang crawl nội dung...");
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        onSaved(form);
+    };
 
-    try {
-      const res = await previewArticle({
-        url: selectedUrl,
-        titleSelector: form.titleSelector,
-        descriptionSelector: form.descriptionSelector,
-        contentSelector: form.contentSelector,
-        imageSelector: form.imageSelector,
-        removeSelector: form.removeSelector,
-      });
-
-      const preview = res.data || res;
-      setArticlePreview(preview);
-      setArticleStatus("Crawl preview thành công.");
-    } catch (err) {
-      console.error(err);
-      setArticleStatus("Preview article lỗi.");
-      toast.error("Preview article lỗi, kiểm tra lại selectors.");
-    } finally {
-      setArticleLoading(false);
-    }
-  }, [selectedUrl, form]);
-
-  /** ===== Save Source (Create / Update) ===== */
-  const handleSave = async (e) => {
-    e.preventDefault();
-
-    if (!form.categoryId) {
-      toast.error("Vui lòng chọn Category.");
-      return;
-    }
-    if (!form.domain || !form.path || !form.linkSelector) {
-      if (
-        !confirm(
-          "Domain / path / linkSelector chưa đầy đủ. Bạn có chắc muốn lưu?"
-        )
-      ) {
-        return;
-      }
-    }
-
-    setSaving(true);
-    try {
-      if (isEdit) {
-        await updateSource(id, form);
-      } else {
-        await createSource(form);
-      }
-
-      toast.success("Lưu source thành công");
-      router.push("/admin/sources");
-    } catch (err) {
-      console.error(err);
-      toast.error("Lưu source lỗi: ", err);
-    } finally {
-      setSaving(false);
-    }
-  };
-
-  const handleCancel = () => {
-    router.push("/admin/sources");
-  };
-
-  /** ====== UI ====== */
-  return (
-    <div className="h-screen flex flex-col bg-gray-50">
-      {/* Top bar */}
-      <header className="flex items-center justify-between px-6 py-4 border-b bg-white">
-        <div>
-          <div className="text-sm text-gray-500">
-            Admin / Sources / {isEdit ? "Edit" : "Create"}
-          </div>
-          <h1 className="text-2xl font-bold">
-            {isEdit ? "Edit Source" : "Create Source"}
-          </h1>
-        </div>
-
-        <div className="flex gap-3">
-          <button
-            type="button"
-            onClick={handleCancel}
-            className="px-4 py-2 rounded border border-gray-300 text-gray-700 hover:bg-gray-100"
-          >
-            Cancel
-          </button>
-          <button
-            type="button"
-            onClick={handleSave}
-            disabled={saving}
-            className="px-4 py-2 rounded bg-green-600 text-white hover:bg-green-700 disabled:opacity-60"
-          >
-            {saving ? "Saving..." : "Save Source"}
-          </button>
-        </div>
-      </header>
-
-      {/* Main 2-panel layout */}
-      <main className="flex-1 flex flex-col lg:flex-row gap-4 p-4 overflow-hidden">
-        {/* LEFT PANEL – Step 1 + Links list */}
-        <section className="lg:w-1/2 flex flex-col bg-white rounded-lg shadow-sm border p-4 overflow-hidden">
-          <div className="flex items-center justify-between mb-3">
-            <div>
-              <h2 className="font-semibold text-lg">Step 1 – Link Config</h2>
-              <p className="text-xs text-gray-500">
-                Cấu hình Category, Domain, Path, Link selector → Preview links
-              </p>
-            </div>
-            <span className="text-xs px-2 py-1 rounded bg-blue-50 text-blue-700">
-              Links
-            </span>
-          </div>
-
-          <div className="flex-1 flex flex-col gap-3 overflow-auto pr-1">
-            {/* Category */}
-            <div>
-              <label className="block text-sm font-medium mb-1">Category</label>
-              <select
-                name="categoryId"
-                value={form.categoryId}
-                onChange={handleChange}
-                className="border p-2 rounded w-full text-sm"
-                required
-              >
-                <option value="">-- Select Category --</option>
-                {categories.map((c) => (
-                  <option key={c.id} value={c.id}>
-                    {c.name}
-                  </option>
-                ))}
-              </select>
+    return (
+        <div className="sf-wrap">
+            {/* HEADER */}
+            <div className="sf-header">
+                <h1 className="sf-title">
+                    {editing ? "Chỉnh sửa Source" : "Thêm Source mới"}
+                </h1>
             </div>
 
-            {/* Domain */}
-            <div>
-              <label className="block text-sm font-medium mb-1">Domain</label>
-              <input
-                name="domain"
-                value={form.domain}
-                onChange={handleChange}
-                className="border p-2 rounded w-full text-sm"
-                placeholder="https://vnexpress.net"
-              />
-            </div>
+            {/* CARD */}
+            <form onSubmit={handleSubmit} className="sf-card sf-form">
 
-            {/* Path */}
-            <div>
-              <label className="block text-sm font-medium mb-1">Path</label>
-              <input
-                name="path"
-                value={form.path}
-                onChange={handleChange}
-                className="border p-2 rounded w-full text-sm"
-                placeholder="the-thao"
-              />
-            </div>
+                {/* ===== STEP PROGRESS ===== */}
+                <div className="sf-steps">
+                    <div className={`sf-step ${step === 1 ? "active" : ""}`}>
+                        <span>1</span> Cấu hình Selector
+                    </div>
+                    <div className={`sf-step ${step === 2 ? "active" : ""}`}>
+                        <span>2</span> Preview bài viết
+                    </div>
+                </div>
 
-            {/* Link selector + limit */}
-            <div className="grid grid-cols-3 gap-2 items-end">
-              <div className="col-span-2">
-                <label className="block text-sm font-medium mb-1">
-                  Link Selector
-                </label>
-                <input
-                  name="linkSelector"
-                  value={form.linkSelector}
-                  onChange={handleChange}
-                  className="border p-2 rounded w-full text-sm"
-                  placeholder="article a"
-                />
-              </div>
+                {/* ============= STEP 1 ============= */}
+                {step === 1 && (
+                    <>
+                        <div className="sf-field">
+                            <label>Category</label>
+                            <select
+                                name="categoryId"
+                                value={form.categoryId}
+                                onChange={handleChange}
+                                className="sf-input"
+                            >
+                                <option value="">-- Chọn Category --</option>
+                                {categories.map((c) => (
+                                    <option key={c.id} value={c.id}>
+                                        {c.name} (ID: {c.id})
+                                    </option>
+                                ))}
+                            </select>
+                        </div>
 
-              <div>
-                <label className="block text-sm font-medium mb-1">Limit</label>
-                <input
-                  type="number"
-                  name="limit"
-                  value={form.limit}
-                  onChange={handleChange}
-                  className="border p-2 rounded w-full text-sm"
-                  min="1"
-                />
-              </div>
-            </div>
+                        <div className="sf-field">
+                            <label>Domain</label>
+                            <input
+                                name="domain"
+                                value={form.domain}
+                                onChange={handleChange}
+                                className="sf-input"
+                                placeholder="https://vnexpress.net"
+                            />
+                        </div>
 
-            {/* Preview button + status */}
-            <div className="flex items-center justify-between">
-              <button
-                type="button"
-                onClick={handlePreviewLinks}
-                disabled={linkLoading}
-                className="px-3 py-1.5 text-sm rounded bg-blue-600 text-white hover:bg-blue-700 disabled:opacity-60"
-              >
-                {linkLoading ? "Loading..." : "Preview Links"}
-              </button>
-              <span className="text-xs text-gray-500">{linkStatus}</span>
-            </div>
+                        <div className="sf-field">
+                            <label>Path</label>
+                            <input
+                                name="path"
+                                value={form.path}
+                                onChange={handleChange}
+                                className="sf-input"
+                                placeholder="/the-thao"
+                            />
+                        </div>
 
-            {/* Links list */}
-            <div className="flex-1 flex flex-col">
-              <label className="block text-sm font-medium mb-1">
-                Links (click để chọn article test)
-              </label>
-              <div className="border rounded flex-1 overflow-auto text-xs">
-                {links.map((link) => (
-                  <div
-                    key={link}
-                    onClick={() => setSelectedUrl(link)}
-                    className={`px-2 py-1 cursor-pointer break-all hover:bg-gray-100 ${
-                      selectedUrl === link
-                        ? "bg-blue-50 border-l-4 border-blue-500"
-                        : ""
-                    }`}
-                  >
-                    {link}
-                  </div>
-                ))}
-                {!links.length && (
-                  <div className="px-2 py-3 text-gray-400 text-xs">
-                    Chưa có link, bấm &quot;Preview Links&quot; để load.
-                  </div>
+                        <div className="sf-field">
+                            <label>Link Selector</label>
+                            <input
+                                name="linkSelector"
+                                value={form.linkSelector}
+                                onChange={handleChange}
+                                className="sf-input"
+                                placeholder="article a"
+                            />
+                        </div>
+
+                        <div className="sf-field">
+                            <label>Limit Preview</label>
+                            <input
+                                type="number"
+                                min="1"
+                                name="limit"
+                                value={form.limit}
+                                onChange={handleChange}
+                                className="sf-input"
+                            />
+                        </div>
+
+                        <button
+                            type="button"
+                            className="sf-btn-primary"
+                            onClick={handlePreviewLinks}
+                        >
+                            Preview Links →
+                        </button>
+                    </>
                 )}
-              </div>
-              {selectedUrl && (
-                <div className="mt-1 text-[11px] text-gray-500 truncate">
-                  Selected: {selectedUrl}
-                </div>
-              )}
-            </div>
-          </div>
-        </section>
 
-        {/* RIGHT PANEL – selectors + article preview */}
-        <section className="lg:w-1/2 flex flex-col bg-white rounded-lg shadow-sm border p-4 overflow-hidden">
-          <div className="flex items-center justify-between mb-3">
-            <div>
-              <h2 className="font-semibold text-lg">Step 2 – Article Config</h2>
-              <p className="text-xs text-gray-500">
-                Nhập selectors cho bài viết và preview nội dung.
-              </p>
-            </div>
-            <span className="text-xs px-2 py-1 rounded bg-emerald-50 text-emerald-700">
-              Article Preview
-            </span>
-          </div>
+                {/* ============= STEP 2 ============= */}
+                {step === 2 && (
+                    <>
+                        <button
+                            type="button"
+                            className="sf-btn-back"
+                            onClick={() => setStep(1)}
+                        >
+                            ← Quay lại Step 1
+                        </button>
 
-          <div className="flex-1 flex flex-col gap-3 overflow-auto pr-1">
-            {/* Source title */}
-            <div>
-              <label className="block text-sm font-medium mb-1">
-                Source Title (hiển thị trong admin)
-              </label>
-              <input
-                name="title"
-                value={form.title}
-                onChange={handleChange}
-                className="border p-2 rounded w-full text-sm"
-                placeholder="VnExpress - Thể thao"
-              />
-            </div>
+                        {/* PREVIEW LINKS */}
+                        <div className="sf-field">
+                            <label>Preview Links</label>
+                            <div className="sf-link-list">
+                                {links.map((link) => (
+                                    <div
+                                        key={link}
+                                        className={`sf-link-item ${
+                                            link === selectedUrl ? "active" : ""
+                                        }`}
+                                        onClick={() => setSelectedUrl(link)}
+                                    >
+                                        {link}
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
 
-            {/* Selectors */}
-            {[
-              "titleSelector",
-              "descriptionSelector",
-              "contentSelector",
-              "imageSelector",
-              "removeSelector",
-            ].map((key) => (
-              <div key={key}>
-                <label className="block text-sm font-medium mb-1">{key}</label>
-                <input
-                  name={key}
-                  value={form[key] ?? ""}
-                  onChange={handleChange}
-                  className="border p-2 rounded w-full text-sm"
-                  placeholder={
-                    key === "contentSelector" ? "article.fck_detail" : ""
-                  }
-                />
-              </div>
-            ))}
+                        {/* TITLE */}
+                        <div className="sf-field">
+                            <label>Source Title</label>
+                            <input
+                                name="title"
+                                value={form.title}
+                                onChange={handleChange}
+                                className="sf-input"
+                                placeholder="VD: VnExpress - Thể thao"
+                            />
+                        </div>
 
-            {/* Status */}
-            <div className="grid grid-cols-2 gap-4 items-end">
-              <div>
-                <label className="block text-sm font-medium mb-1">Status</label>
-                <select
-                  name="status"
-                  value={form.status}
-                  onChange={handleChange}
-                  className="border p-2 rounded w-full text-sm"
-                >
-                  <option value={1}>Active</option>
-                  <option value={0}>Inactive</option>
-                </select>
-              </div>
+                        {/* SELECTORS */}
+                        {[
+                            "titleSelector",
+                            "descriptionSelector",
+                            "contentSelector",
+                            "imageSelector",
+                            "removeSelector",
+                        ].map((key) => (
+                            <div className="sf-field" key={key}>
+                                <label>{key}</label>
+                                <input
+                                    name={key}
+                                    value={form[key] || ""}
+                                    onChange={handleChange}
+                                    className="sf-input"
+                                />
+                            </div>
+                        ))}
 
-              <div className="flex flex-col items-end gap-1">
-                <button
-                  type="button"
-                  onClick={handlePreviewArticle}
-                  disabled={articleLoading || !selectedUrl}
-                  className="px-4 py-2 rounded border border-blue-600 text-blue-600 text-sm hover:bg-blue-50 disabled:opacity-60"
-                >
-                  {articleLoading ? "Loading preview..." : "Preview Article"}
-                </button>
-                <span className="text-xs text-gray-500">{articleStatus}</span>
-              </div>
-            </div>
+                        <button
+                            type="button"
+                            className="sf-btn-outline"
+                            onClick={handlePreviewArticle}
+                        >
+                            Preview Article
+                        </button>
 
-            {/* Article preview box */}
-            <div className="flex-1 border rounded p-3 bg-gray-50 overflow-auto text-sm">
-              {!articlePreview && (
-                <div className="text-gray-400 text-xs">
-                  Chưa có preview. Chọn 1 link bên trái và bấm &quot;Preview
-                  Article&quot;.
-                </div>
-              )}
+                        <button className="sf-btn-primary">Save Source</button>
 
-              {articlePreview && (
-                <>
-                  <div className="font-semibold mb-1">
-                    {articlePreview.title || "(no title)"}
-                  </div>
-                  <div className="text-xs text-gray-600 mb-2">
-                    {articlePreview.description}
-                  </div>
+                        {/* ARTICLE PREVIEW */}
+                        {articlePreview && (
+                            <div className="sf-article-preview">
+                                <h3>{articlePreview.title}</h3>
+                                <p>{articlePreview.description}</p>
 
-                  {articlePreview.imageUrl && (
-                    <img
-                      src={articlePreview.imageUrl}
-                      alt=""
-                      className="max-w-sm mb-2 rounded"
-                    />
-                  )}
+                                {articlePreview.imageUrl && (
+                                    <img
+                                        src={articlePreview.imageUrl}
+                                        className="sf-article-img"
+                                    />
+                                )}
 
-                  <div
-                    className="prose max-w-none text-xs"
-                    dangerouslySetInnerHTML={{
-                      __html: articlePreview.contentHtml?.slice(0, 1500) || "",
-                    }}
-                  />
-                </>
-              )}
-            </div>
-          </div>
-        </section>
-      </main>
-    </div>
-  );
+                                <div
+                                    className="sf-article-content"
+                                    dangerouslySetInnerHTML={{
+                                        __html: articlePreview.contentHtml?.slice(
+                                            0,
+                                            1200
+                                        ),
+                                    }}
+                                />
+                            </div>
+                        )}
+                    </>
+                )}
+            </form>
+        </div>
+    );
 }

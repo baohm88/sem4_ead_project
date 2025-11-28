@@ -1,0 +1,319 @@
+/* =======================================================
+    ARTICLES LIST PAGE — PREMIUM ADMIN UI
+======================================================= */
+
+/* container */
+.art-container {
+    padding: 24px;
+    animation: fadeIn .35s ease;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(6px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* TITLE */
+.art-header-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 22px;
+}
+
+.art-title {
+    font-size: 28px;
+    font-weight: 700;
+    color: #1e293b;
+}
+
+.cat-actions {
+    display: flex;
+    gap: 12px;
+}
+
+/* BUTTONS */
+.cv-btn-back,
+.cv-btn-edit {
+    padding: 10px 18px;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 500;
+    transition: all .25s ease;
+}
+
+/* back */
+.cv-btn-back {
+    background: #f1f5f9;
+    color: #475569;
+}
+
+.cv-btn-back:hover {
+    background: #e2e8f0;
+}
+
+/* add new */
+.cv-btn-edit {
+    background: #3b82f6;
+    color: white;
+}
+
+.cv-btn-edit:hover {
+    background: #2563eb;
+}
+
+/* BULK PANEL */
+.bulk-panel {
+    background: #fff7f7;
+    border: 1px solid #fecaca;
+    padding: 12px 18px;
+    border-radius: 12px;
+    margin-bottom: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.bulk-delete-btn {
+    background: #ef4444;
+    padding: 8px 14px;
+    border-radius: 10px;
+    color: white;
+    font-size: 14px;
+}
+
+.bulk-delete-btn:hover {
+    background: #dc2626;
+}
+
+/* SEARCH CARD */
+.art-card {
+    background: white;
+    padding: 18px;
+    border-radius: 16px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+}
+
+.search-card {
+    margin-bottom: 16px;
+}
+
+.art-tool-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.art-input {
+    border: 1px solid #e2e8f0;
+    padding: 10px 12px;
+    border-radius: 12px;
+    font-size: 14px;
+    width: 100%;
+}
+
+.art-counter {
+    margin-left: 18px;
+    font-size: 14px;
+    color: #475569;
+}
+
+/* TABLE WRAPPER */
+.art-table-wrap {
+    margin-top: 16px;
+}
+
+/* TABLE */
+.art-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+}
+
+/* HEADER */
+.art-table thead th {
+    padding: 14px 16px;
+    background: rgba(255,255,255,0.7);
+    backdrop-filter: blur(8px);
+    font-weight: 600;
+    font-size: 13.5px;
+    color: #475569;
+    border-bottom: 1px solid rgba(148,163,184,0.35);
+}
+
+/* BODY */
+.art-table tbody tr {
+    transition: background .22s ease, transform .18s ease;
+}
+
+.art-table tbody tr:hover {
+    background: #f8fafc;
+    transform: translateY(-1px);
+}
+
+/* TD */
+.art-table tbody td {
+    padding: 14px 16px;
+    border-bottom: 1px solid rgba(226,232,240,.55);
+    color: #334155;
+}
+
+/* LAST ROW */
+.art-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+/* THUMB */
+.art-thumb {
+    width: 70px;
+    height: 45px;
+    object-fit: cover;
+    border-radius: 8px;
+}
+
+/* TOOLTIP */
+.tooltip-wrapper {
+    position: relative;
+    display: inline-block;
+    max-width: 230px;
+}
+
+.tooltip-short {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.tooltip-panel {
+    position: absolute;
+    top: 115%;
+    left: 0;
+    padding: 10px 14px;
+    background: white;
+    box-shadow: 0 4px 16px rgba(0,0,0,.12);
+    border-radius: 10px;
+    font-size: 13px;
+    max-width: 280px;
+    z-index: 50;
+}
+
+/* STATUS */
+.art-status {
+    padding: 6px 12px;
+    border-radius: 8px;
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: capitalize;
+}
+
+.art-status.published {
+    background: #dcfce7;
+    color: #15803d;
+}
+
+.art-status.draft {
+    background: #fef9c3;
+    color: #ca8a04;
+}
+
+/* ACTIONS */
+.neo-action-row {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+}
+
+/* === ICON BUTTON NEON (dùng chung hệ thống) === */
+.neo-icon-btn {
+    padding: 8px;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all .25s ease;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.neo-icon {
+    width: 20px;
+    height: 20px;
+    stroke: currentColor;
+    fill: none;
+    stroke-width: 2.2;
+    transition: all .25s ease;
+}
+
+/* view */
+.neo-icon-btn.view {
+    color: #3b82f6;
+}
+
+.neo-icon-btn.view:hover {
+    color: #2563eb;
+    transform: translateY(-2px) scale(1.12);
+}
+
+/* edit */
+.neo-icon-btn.edit {
+    color: #eab308;
+}
+
+.neo-icon-btn.edit:hover {
+    color: #ca8a04;
+    transform: translateY(-2px) scale(1.12);
+}
+
+/* delete */
+.neo-icon-btn.delete {
+    color: #ef4444;
+}
+
+.neo-icon-btn.delete:hover {
+    color: #dc2626;
+    transform: translateY(-2px) scale(1.12);
+}
+
+/* PAGINATION */
+.art-pagination-bar {
+    margin-top: 24px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 18px;
+}
+
+.btn-ghost,
+.btn-primary {
+    padding: 8px 16px;
+    border-radius: 10px;
+    font-size: 14px;
+}
+
+/* prev */
+.btn-ghost {
+    background: #f1f5f9;
+    color: #475569;
+}
+
+.btn-ghost:hover:not(:disabled) {
+    background: #e2e8f0;
+}
+
+.btn-ghost:disabled {
+    opacity: .5;
+}
+
+/* next */
+.btn-primary {
+    background: #3b82f6;
+    color: white;
+}
+
+.btn-primary:hover:not(:disabled) {
+    background: #2563eb;
+}
+
+.cat-page-indicator {
+    font-size: 14px;
+    color: #475569;
+}

@@ -44,7 +44,7 @@
 }
 
 .admin-main {
-    max-width: 1200px;
+    width: auto ;
     margin: 0 auto;
     padding: 1rem;
 }

@@ -1,7 +1,7 @@
 "use client";
 
 import { ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css"; // Imp  ort CSS bắt buộc
+import "react-toastify/dist/ReactToastify.css";
 
 export default function ToastProvider({ children }) {
     return (
@@ -9,15 +9,12 @@ export default function ToastProvider({ children }) {
             {children}
             <ToastContainer
                 position="top-right"
-                autoClose={3000} // Tự đóng sau 3 giây
+                autoClose={2500}
                 hideProgressBar={false}
-                newestOnTop={false}
                 closeOnClick
-                rtl={false}
-                pauseOnFocusLoss
-                draggable
                 pauseOnHover
-                theme="light" // hoặc "colored" nếu muốn màu mè hơn
+                draggable
+                theme="colored"
             />
         </>
     );
