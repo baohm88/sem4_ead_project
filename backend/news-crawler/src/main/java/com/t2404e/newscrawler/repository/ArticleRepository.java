@@ -38,4 +38,19 @@ public interface ArticleRepository extends JpaRepository<Article, Long> {
     @Query("SELECT a FROM Article a WHERE a.status = :status")
     List<Article> findByStatusLimited(ArticleStatus status,
                                       org.springframework.data.domain.Pageable pageable);
+
+    @Query("""
+    SELECT a FROM Article a
+    WHERE (:keyword IS NULL OR :keyword = '' 
+           OR LOWER(a.title) LIKE LOWER(CONCAT('%', :keyword, '%'))
+           OR LOWER(a.slug) LIKE LOWER(CONCAT('%', :keyword, '%')))
+      AND (:categoryId IS NULL OR a.articleCategory.id = :categoryId)
+      AND (:status IS NULL OR a.status = :status)
+""")
+    Page<Article> searchAdmin(
+            @Param("keyword") String keyword,
+            @Param("categoryId") Long categoryId,
+            @Param("status") ArticleStatus status,
+            Pageable pageable
+    );
 }

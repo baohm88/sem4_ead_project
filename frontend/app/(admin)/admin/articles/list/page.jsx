@@ -1,16 +1,17 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import {useEffect, useState} from "react";
 import Link from "next/link";
 import Card from "@/components/admin/Card";
-import { getAllArticles, deleteArticle } from "@/services/articleApi";
+import {getAllArticles, deleteArticle} from "@/services/articleApi";
+import {fetchCategories} from "@/services/categoryApi";
 // import "@/styles/admin/articles.css";
 import "@/styles/admin/article-list.css";
 
 /* ============================================================
    Tooltip nhỏ
 ============================================================ */
-function TooltipText({ text }) {
+function TooltipText({text}) {
     const [show, setShow] = useState(false);
 
     return (
@@ -22,7 +23,8 @@ function TooltipText({ text }) {
             <span className="tooltip-short normal-text text-sm">{text}</span>
 
             {show && (
-                <div className="tooltip-panel absolute z-30 top-full left-0 mt-1 bg-gray-900 text-white text-xs px-2 py-1 rounded shadow">
+                <div
+                    className="tooltip-panel absolute z-30 top-full left-0 mt-1 bg-gray-900 text-white text-xs px-2 py-1 rounded shadow">
                     {text}
                 </div>
             )}
@@ -38,6 +40,10 @@ export default function ArticlesList() {
     const [meta, setMeta] = useState({});
     const [loading, setLoading] = useState(true);
 
+    const [categoryId, setCategoryId] = useState("");
+    const [status, setStatus] = useState("");
+    const [categories, setCategories] = useState([]);
+
     const [q, setQ] = useState("");
     const [page, setPage] = useState(0);
     const pageSize = 10;
@@ -47,18 +53,34 @@ export default function ArticlesList() {
     /* ============================================================
        LOAD DATA (CALL API thật) – ADMIN API
     ============================================================ */
+    // const loadArticles = async () => {
+    //     try {
+    //         setLoading(true);
+    //
+    //         const res = await getAllArticles(page, pageSize, q, categoryId, status);
+    //
+    //         // backend trả: { success, message, data }
+    //         setArticles(res.data.content || []);
+    //         setMeta(res.data);
+    //
+    //     } catch (err) {
+    //         console.error("❌ Load articles error:", err);
+    //         setArticles([]);
+    //         setMeta({});
+    //     } finally {
+    //         setLoading(false);
+    //     }
+    // };
+
     const loadArticles = async () => {
         try {
             setLoading(true);
-
-            const res = await getAllArticles(page, pageSize, q);
-
-            // backend trả: { success, message, data }
-            setArticles(res.data.content || []);
-            setMeta(res.data);
-
+            const res = await getAllArticles(page, pageSize, q, "createdAt", "DESC", categoryId, status);
+            // res = { success, message, data }
+            setArticles(res.data?.content || []);
+            setMeta(res.data || {});
         } catch (err) {
-            console.error("❌ Load articles error:", err);
+            console.error(err);
             setArticles([]);
             setMeta({});
         } finally {
@@ -68,7 +90,18 @@ export default function ArticlesList() {
 
     useEffect(() => {
         loadArticles();
-    }, [page, q]);
+    }, [page, q, categoryId, status]);
+
+    useEffect(() => {
+        (async () => {
+            try {
+                const res = await fetchCategories();
+                setCategories(res.data || []);
+            } catch (e) {
+                console.error("Load category fail", e);
+            }
+        })();
+    }, []);
 
 
     /* ============================================================
@@ -146,8 +179,25 @@ export default function ArticlesList() {
             )}
 
             {/* ================= SEARCH ================= */}
+          {/*  <Card className="mb-4">*/}
+          {/*      <div className="flex justify-between items-center">*/}
+          {/*          <input*/}
+          {/*              value={q}*/}
+          {/*              onChange={(e) => setQ(e.target.value)}*/}
+          {/*              className="border p-2 rounded w-72 text-sm"*/}
+          {/*              placeholder="Tìm theo title hoặc slug…"*/}
+          {/*          />*/}
+
+          {/*          <span className="text-sm text-gray-600">*/}
+          {/*  Tổng: <strong>{meta.totalElements || 0}</strong>*/}
+          {/*</span>*/}
+          {/*      </div>*/}
+          {/*  </Card>*/}
+
             <Card className="mb-4">
-                <div className="flex justify-between items-center">
+                <div className="flex flex-wrap gap-3 items-center">
+
+                    {/* Search */}
                     <input
                         value={q}
                         onChange={(e) => setQ(e.target.value)}
@@ -155,9 +205,38 @@ export default function ArticlesList() {
                         placeholder="Tìm theo title hoặc slug…"
                     />
 
-                    <span className="text-sm text-gray-600">
+                    {/* Category Filter */}
+                    <select
+                        value={categoryId}
+                        onChange={(e) => setCategoryId(e.target.value)}
+                        className="border p-2 rounded text-sm"
+                    >
+                        <option value="">-- All Categories --</option>
+                        {categories.map((c) => (
+                            <option key={c.id} value={c.id}>
+                                {c.name}
+                            </option>
+                        ))}
+                    </select>
+
+                    {/* Status Filter */}
+                    <select
+                        value={status}
+                        onChange={(e) => setStatus(e.target.value)}
+                        className="border p-2 rounded text-sm"
+                    >
+                        <option value="">-- All Status --</option>
+                        <option value="NEW">NEW</option>
+                        <option value="CRAWLING">CRAWLING</option>
+                        <option value="CRAWLED">CRAWLED</option>
+                        <option value="ERROR">ERROR</option>
+                    </select>
+
+                    {/* Tổng */}
+                    <span className="text-sm text-gray-600 ml-auto">
             Tổng: <strong>{meta.totalElements || 0}</strong>
-          </span>
+        </span>
+
                 </div>
             </Card>
 
@@ -211,11 +290,11 @@ export default function ArticlesList() {
                             </td>
 
                             <td className="p-2 max-w-xs">
-                                <TooltipText text={a.title?.length > 30 ? a.title.slice(0, 30) + "…" : a.title} />
+                                <TooltipText text={a.title?.length > 30 ? a.title.slice(0, 30) + "…" : a.title}/>
                             </td>
 
                             <td className="p-2 max-w-xs">
-                                <TooltipText text={a.slug?.length > 30 ? a.slug.slice(0, 30) + "…" : a.slug} />
+                                <TooltipText text={a.slug?.length > 30 ? a.slug.slice(0, 30) + "…" : a.slug}/>
                             </td>
 
                             <td className="p-2">
@@ -227,7 +306,7 @@ export default function ArticlesList() {
                             </td>
 
                             <td className="p-2 max-w-xs">
-                                <TooltipText text={a.url?.length > 30 ? a.url.slice(0, 30) + "…" : a.url} />
+                                <TooltipText text={a.url?.length > 30 ? a.url.slice(0, 30) + "…" : a.url}/>
                             </td>
 
                             <td className="p-2">{a.articleCategory?.name || "—"}</td>
@@ -238,12 +317,29 @@ export default function ArticlesList() {
 
                             <td className="p-2 text-center">
                                 <div className="flex gap-2 justify-center">
-                                    <Link
-                                        href={`/admin/articles/${a.id}`}
-                                        className="text-blue-600"
-                                    >
-                                        👁
-                                    </Link>
+                                    {/*<Link*/}
+                                    {/*    href={`/admin/articles/${a.id}`}*/}
+                                    {/*    className="text-blue-600"*/}
+                                    {/*>*/}
+                                    {/*    👁*/}
+                                    {/*</Link>*/}
+
+                                    {/* VIEW BUTTON – disabled nếu chưa CRAWLED */}
+                                    {a.status === "CRAWLED" ? (
+                                        <Link
+                                            href={`/admin/articles/${a.id}`}
+                                            className="neo-icon-btn view text-blue-600"
+                                        >
+                                            👁
+                                        </Link>
+                                    ) : (
+                                        <span
+                                            className="neo-icon-btn text-gray-400 opacity-40 cursor-default pointer-events-none"
+                                            title="Bài chưa crawl xong — không thể xem"
+                                        >
+    👁
+  </span>
+                                    )}
                                     <Link
                                         href={`/admin/articles/${a.id}/edit`}
                                         className="text-amber-600"

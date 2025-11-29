@@ -1,0 +1,16 @@
+/* Cải thiện style render HTML content giống báo điện tử */
+.prose img {
+    margin: 16px auto;
+    border-radius: 6px;
+}
+
+.prose p {
+    margin-bottom: 14px;
+    line-height: 1.7;
+}
+
+.prose h2, .prose h3 {
+    margin-top: 24px;
+    margin-bottom: 12px;
+    font-weight: bold;
+}

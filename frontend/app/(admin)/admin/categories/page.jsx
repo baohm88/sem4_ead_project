@@ -41,7 +41,10 @@ export default function CategoriesPage() {
 
     (async () => {
       try {
-        const data = await fetchCategories();
+        const res = await fetchCategories();
+          console.log("category data", res.data);
+
+          const data = res.data;
         if (!mounted) return;
 
         setAll(

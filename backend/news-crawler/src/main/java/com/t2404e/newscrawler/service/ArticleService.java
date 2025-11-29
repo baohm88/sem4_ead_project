@@ -65,19 +65,19 @@ public class ArticleService {
         return articleRepository.search(keyword, pageable);
     }
 
-    public PageResponse<Article> getAllArticles(int page, int size, String keyword, String sortBy, String direction) {
-        Pageable pageable = PageRequest.of(
-                page,
-                size,
-                direction.equalsIgnoreCase("ASC")
-                        ? Sort.by(sortBy).ascending()
-                        : Sort.by(sortBy).descending()
-        );
+    public PageResponse<Article> getAllArticles(
+            int page, int size, String keyword, String sortBy, String direction,
+            Long categoryId, ArticleStatus status
+    ) {
+        Sort sort = direction.equalsIgnoreCase("ASC")
+                ? Sort.by(sortBy).ascending()
+                : Sort.by(sortBy).descending();
 
-        Page<Article> articlePage =
-                (keyword == null || keyword.isBlank())
-                        ? articleRepository.findAll(pageable)
-                        : articleRepository.search(keyword, pageable);
+        Pageable pageable = PageRequest.of(page, size, sort);
+
+        Page<Article> articlePage = articleRepository.searchAdmin(
+                keyword, categoryId, status, pageable
+        );
 
         return PageResponse.<Article>builder()
                 .content(articlePage.getContent())
@@ -91,36 +91,47 @@ public class ArticleService {
                 .build();
     }
 
-    public PageResponse<Article> getCrawledArticles(int page, int size, String keyword, String sortBy, String direction) {
+public PageResponse<Article> getCrawledArticles(
+        int page,
+        int size,
+        String keyword,
+        String sortBy,
+        String direction,
+        Long categoryId
+) {
+    Sort sort = direction.equalsIgnoreCase("ASC")
+            ? Sort.by(sortBy).ascending()
+            : Sort.by(sortBy).descending();
 
-        Pageable pageable = PageRequest.of(
-                page,
-                size,
-                direction.equalsIgnoreCase("ASC")
-                        ? Sort.by(sortBy).ascending()
-                        : Sort.by(sortBy).descending()
-        );
+    Pageable pageable = PageRequest.of(page, size, sort);
 
-        Page<Article> articlePage;
-
-        if (keyword == null || keyword.isBlank()) {
-            articlePage = articleRepository.findByStatus(ArticleStatus.CRAWLED, pageable);
-        } else {
-            articlePage = articleRepository.search(keyword, pageable)
-                    .map(a -> a.getStatus() == ArticleStatus.CRAWLED ? a : null); // lọc bằng search
-        }
-
-        return PageResponse.<Article>builder()
-                .content(articlePage.getContent())
-                .currentPage(articlePage.getNumber())
-                .pageSize(articlePage.getSize())
-                .totalPages(articlePage.getTotalPages())
-                .totalElements(articlePage.getTotalElements())
-                .keyword(keyword)
-                .sortBy(sortBy)
-                .direction(direction)
-                .build();
+    Page<Article> articlePage;
+    if (keyword == null || keyword.isBlank()) {
+        articlePage = articleRepository.findAll(pageable);
+    } else {
+        articlePage = articleRepository.search(keyword, pageable);
     }
+
+    var filtered = articlePage
+            .getContent()
+            .stream()
+            .filter(a -> a.getStatus() == ArticleStatus.CRAWLED)
+            .filter(a -> categoryId == null ||
+                    (a.getArticleCategory() != null
+                            && a.getArticleCategory().getId().equals(categoryId)))
+            .toList();
+
+    return PageResponse.<Article>builder()
+            .content(filtered)
+            .currentPage(articlePage.getNumber())
+            .pageSize(articlePage.getSize())
+            .totalPages(articlePage.getTotalPages())
+            .totalElements(articlePage.getTotalElements())
+            .keyword(keyword)
+            .sortBy(sortBy)
+            .direction(direction)
+            .build();
+}
 
     public void delete(Long id) {
         articleRepository.deleteById(id);

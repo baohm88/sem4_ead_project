@@ -4,6 +4,7 @@ import com.t2404e.newscrawler.dto.ApiResponse;
 import com.t2404e.newscrawler.dto.ErrorResponse;
 import com.t2404e.newscrawler.dto.PageResponse;
 import com.t2404e.newscrawler.entity.Article;
+import com.t2404e.newscrawler.entity.ArticleStatus;
 import com.t2404e.newscrawler.repository.ArticleRepository;
 import com.t2404e.newscrawler.service.ArticleService;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -25,16 +26,20 @@ public class ArticleController {
     private final ArticleService articleService;
 
     // ===================== GET ALL ==============================
-    // ADMIN – XEM TẤT CẢ
+// ADMIN – XEM TẤT CẢ
     @GetMapping("/admin")
     public ApiResponse<PageResponse<Article>> getAllArticles(
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size,
             @RequestParam(defaultValue = "") String keyword,
             @RequestParam(defaultValue = "createdAt") String sortBy,
-            @RequestParam(defaultValue = "DESC") String direction
+            @RequestParam(defaultValue = "DESC") String direction,
+            @RequestParam(required = false) Long categoryId,
+            @RequestParam(required = false) ArticleStatus status
     ) {
-        return ApiResponse.success(articleService.getAllArticles(page, size, keyword, sortBy, direction));
+        return ApiResponse.success(
+                articleService.getAllArticles(page, size, keyword, sortBy, direction, categoryId, status)
+        );
     }
 
 
@@ -45,9 +50,12 @@ public class ArticleController {
             @RequestParam(defaultValue = "5") int size,
             @RequestParam(defaultValue = "") String keyword,
             @RequestParam(defaultValue = "createdAt") String sortBy,
-            @RequestParam(defaultValue = "DESC") String direction
+            @RequestParam(defaultValue = "DESC") String direction,
+            @RequestParam(required = false) Long categoryId
     ) {
-        return ApiResponse.success(articleService.getCrawledArticles(page, size, keyword, sortBy, direction));
+        return ApiResponse.success(
+                articleService.getCrawledArticles(page, size, keyword, sortBy, direction, categoryId)
+        );
     }
 
     // ===================== GET ONE ==============================
