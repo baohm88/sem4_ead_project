@@ -53,4 +53,19 @@ public interface ArticleRepository extends JpaRepository<Article, Long> {
             @Param("status") ArticleStatus status,
             Pageable pageable
     );
+
+    @Query("""
+    SELECT a FROM Article a
+    WHERE a.status = 'CRAWLED'
+      AND (:keyword = '' OR LOWER(a.title) LIKE LOWER(CONCAT('%', :keyword, '%')))
+      AND a.articleCategory.id = :categoryId
+""")
+    Page<Article> findByStatusAndCategory(ArticleStatus articleStatus, Long categoryId, String keyword, Pageable pageable);
+
+    @Query("""
+    SELECT a FROM Article a
+    WHERE a.status = 'CRAWLED'
+      AND (:keyword = '' OR LOWER(a.title) LIKE LOWER(CONCAT('%', :keyword, '%')))
+""")
+    Page<Article> findCrawled(String keyword, Pageable pageable);
 }

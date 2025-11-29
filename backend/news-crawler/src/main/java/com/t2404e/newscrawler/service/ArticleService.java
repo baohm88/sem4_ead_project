@@ -91,6 +91,47 @@ public class ArticleService {
                 .build();
     }
 
+//public PageResponse<Article> getCrawledArticles(
+//        int page,
+//        int size,
+//        String keyword,
+//        String sortBy,
+//        String direction,
+//        Long categoryId
+//) {
+//    Sort sort = direction.equalsIgnoreCase("ASC")
+//            ? Sort.by(sortBy).ascending()
+//            : Sort.by(sortBy).descending();
+//
+//    Pageable pageable = PageRequest.of(page, size, sort);
+//
+//    Page<Article> articlePage;
+//    if (keyword == null || keyword.isBlank()) {
+//        articlePage = articleRepository.findAll(pageable);
+//    } else {
+//        articlePage = articleRepository.search(keyword, pageable);
+//    }
+//
+//    var filtered = articlePage
+//            .getContent()
+//            .stream()
+//            .filter(a -> a.getStatus() == ArticleStatus.CRAWLED)
+//            .filter(a -> categoryId == null ||
+//                    (a.getArticleCategory() != null
+//                            && a.getArticleCategory().getId().equals(categoryId)))
+//            .toList();
+//
+//    return PageResponse.<Article>builder()
+//            .content(filtered)
+//            .currentPage(articlePage.getNumber())
+//            .pageSize(articlePage.getSize())
+//            .totalPages(articlePage.getTotalPages())
+//            .totalElements(articlePage.getTotalElements())
+//            .keyword(keyword)
+//            .sortBy(sortBy)
+//            .direction(direction)
+//            .build();
+//}
 public PageResponse<Article> getCrawledArticles(
         int page,
         int size,
@@ -99,40 +140,33 @@ public PageResponse<Article> getCrawledArticles(
         String direction,
         Long categoryId
 ) {
-    Sort sort = direction.equalsIgnoreCase("ASC")
-            ? Sort.by(sortBy).ascending()
-            : Sort.by(sortBy).descending();
+    Sort sort = direction.equalsIgnoreCase("DESC")
+            ? Sort.by(sortBy).descending()
+            : Sort.by(sortBy).ascending();
 
     Pageable pageable = PageRequest.of(page, size, sort);
 
-    Page<Article> articlePage;
-    if (keyword == null || keyword.isBlank()) {
-        articlePage = articleRepository.findAll(pageable);
+    Page<Article> result;
+
+    if (categoryId != null) {
+        result = articleRepository.findByStatusAndCategory(
+                ArticleStatus.CRAWLED, categoryId, keyword, pageable
+        );
     } else {
-        articlePage = articleRepository.search(keyword, pageable);
+        result = articleRepository.findCrawled(keyword, pageable);
     }
 
-    var filtered = articlePage
-            .getContent()
-            .stream()
-            .filter(a -> a.getStatus() == ArticleStatus.CRAWLED)
-            .filter(a -> categoryId == null ||
-                    (a.getArticleCategory() != null
-                            && a.getArticleCategory().getId().equals(categoryId)))
-            .toList();
-
-    return PageResponse.<Article>builder()
-            .content(filtered)
-            .currentPage(articlePage.getNumber())
-            .pageSize(articlePage.getSize())
-            .totalPages(articlePage.getTotalPages())
-            .totalElements(articlePage.getTotalElements())
-            .keyword(keyword)
-            .sortBy(sortBy)
-            .direction(direction)
-            .build();
+    return new PageResponse<>(
+            result.getContent(),        // 🔥 PHẢI LẤY CONTENT
+            result.getNumber(),
+            result.getSize(),
+            result.getTotalPages(),
+            result.getTotalElements(),
+            keyword,
+            sortBy,
+            direction
+    );
 }
-
     public void delete(Long id) {
         articleRepository.deleteById(id);
     }
