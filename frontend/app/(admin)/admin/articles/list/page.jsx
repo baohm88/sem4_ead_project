@@ -5,6 +5,7 @@ import Link from "next/link";
 import Card from "@/components/admin/Card";
 import { getAllArticles, deleteArticle } from "@/services/articleApi";
 import "@/styles/admin/articles.css"; // dùng chung style cũ
+import "@/styles/admin/article-list.css";
 
 function TooltipText({ text }) {
   const [show, setShow] = useState(false);

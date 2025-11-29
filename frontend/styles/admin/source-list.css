@@ -1,0 +1,378 @@
+/* ============================================================
+   SOURCE LIST PAGE — PREMIUM GLASS STYLE (MATCH CATEGORY PAGE)
+============================================================ */
+
+.source-wrap {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    padding: 16px;
+    animation: fadeSourceIn .25s ease;
+}
+
+@keyframes fadeSourceIn {
+    from { opacity: 0; transform: translateY(3px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ================= HEADER ================= */
+.source-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+}
+
+.source-title {
+    font-size: 22px;
+    font-weight: 700;
+    margin: 0;
+    color: #111827;
+}
+
+/* Add button */
+.source-btn-add {
+    padding: 10px 16px;
+    font-size: 15px;
+    border-radius: 12px;
+
+    background: linear-gradient(135deg, #3b82f6, #2563eb);
+    color: #fff;
+    border: none;
+
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+
+    transition: transform .25s ease, box-shadow .25s ease;
+}
+
+.source-btn-add:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 0 14px rgba(59,130,246,0.45);
+}
+
+/* ================= CARD ================= */
+.source-card {
+    background: rgba(255,255,255,0.55);
+    border-radius: 16px;
+    padding: 18px;
+    border: 1px solid rgba(148,163,184,0.25);
+    backdrop-filter: blur(12px);
+
+    box-shadow:
+            0 4px 14px rgba(0,0,0,0.05),
+            0 2px 6px rgba(0,0,0,0.06);
+}
+
+/* ================= TABLE ================= */
+.source-table-wrap {
+    width: 100%;
+    overflow: auto;
+
+    border-radius: 16px;
+    border: 1px solid rgba(148,163,184,0.25);
+
+    background: rgba(255,255,255,0.55);
+    backdrop-filter: blur(14px);
+
+    box-shadow:
+            0 4px 14px rgba(0,0,0,0.05),
+            0 2px 6px rgba(0,0,0,0.06);
+}
+
+.source-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 15px;
+}
+
+/* HEAD */
+.source-table thead th {
+    padding: 14px 18px;
+    text-align: left;
+    background: rgba(255,255,255,0.7);
+    backdrop-filter: blur(10px);
+
+    font-weight: 600;
+    font-size: 14px;
+    color: #475569;
+
+    border-bottom: 1px solid rgba(148,163,184,0.25);
+    white-space: nowrap;
+}
+
+/* ROWS */
+.source-table tbody tr {
+    transition: background .22s ease, transform .18s ease, box-shadow .22s ease;
+}
+
+.source-table tbody tr:hover {
+    background: rgba(241,245,249,0.7);
+    transform: translateY(-2px);
+
+    box-shadow:
+            0 0 12px rgba(59,130,246,0.25),
+            0 0 12px rgba(168,85,247,0.25);
+}
+
+/* CELLS */
+.source-table tbody td {
+    padding: 14px 18px;
+    border-bottom: 1px solid rgba(226,232,240,0.5);
+    vertical-align: middle;
+    color: #334155;
+}
+
+/* last row remove border */
+.source-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+/* strong text */
+.source-td-strong {
+    font-weight: 600;
+}
+
+/* ================= ACTION BUTTONS ================= */
+.source-action-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+/* unified icon button */
+.source-icon-btn {
+    cursor: pointer;
+    padding: 8px;
+    border-radius: 12px;
+    border: none;
+    background: none;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    transition: transform .25s ease, box-shadow .25s ease, color .25s ease;
+}
+
+.source-icon-btn svg {
+    width: 22px;
+    height: 22px;
+    stroke-width: 2.4;
+    stroke: currentColor;
+}
+
+/* hover glow */
+.source-icon-btn:hover {
+    transform: translateY(-2px) scale(1.10);
+    color: #a855f7;
+
+    box-shadow:
+            0 0 14px rgba(59,130,246,0.35),
+            0 0 14px rgba(168,85,247,0.35);
+}
+
+/* color themes */
+.source-icon-view { color: #38bdf8; }
+.source-icon-edit { color: #facc15; }
+.source-icon-delete { color: #f87171; }
+
+.source-icon-delete:hover {
+    color: #ef4444;
+}
+
+/* Empty */
+.source-empty {
+    padding: 12px;
+    color: #64748b;
+    font-size: 14px;
+}
+
+/* ================= MOBILE ================= */
+@media (max-width: 640px) {
+
+    .source-table thead {
+        display: none;
+    }
+
+    .source-table tbody tr {
+        display: block;
+        margin-bottom: 16px;
+
+        background: rgba(255,255,255,0.75);
+        border-radius: 16px;
+        padding: 12px;
+
+        box-shadow:
+                0 4px 12px rgba(0,0,0,0.06),
+                0 2px 6px rgba(0,0,0,0.08);
+    }
+
+    .source-table tbody td {
+        display: flex;
+        justify-content: space-between;
+        padding: 10px 6px;
+        border-bottom: 1px solid rgba(226,232,240,0.5);
+    }
+
+    .source-table tbody td:last-child {
+        border-bottom: none;
+    }
+
+    .source-table tbody td::before {
+        content: attr(data-label);
+        font-weight: 600;
+        color: #6b7280;
+    }
+
+    .source-action-row {
+        justify-content: flex-end;
+        gap: 16px;
+    }
+}
+
+
+/* ================================================
+   SOURCE TABLE — SAME STYLE AS CATEGORIES TABLE
+================================================ */
+
+.src-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 15px;
+}
+
+/* HEAD */
+.src-table thead th {
+    padding: 14px 18px;
+    text-align: left;
+    background: rgba(255,255,255,0.65);
+    backdrop-filter: blur(12px);
+    font-weight: 600;
+    font-size: 14px;
+    color: #475569;
+    border-bottom: 1px solid rgba(148,163,184,0.22);
+    white-space: nowrap;
+}
+
+/* BODY ROWS */
+.src-table tbody tr {
+    transition: background .22s ease, transform .16s ease;
+}
+
+.src-table tbody tr:hover {
+    background: rgba(241,245,249,0.7);
+    transform: translateY(-1px);
+}
+
+/* BODY CELLS */
+.src-table tbody td {
+    padding: 14px 18px;
+    border-bottom: 1px solid rgba(226,232,240,0.55);
+    color: #334155;
+}
+
+.src-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.src-td-strong {
+    font-weight: 600;
+}
+
+/* BADGES */
+.src-badge {
+    padding: 6px 12px;
+    font-size: 12px;
+    border-radius: 8px;
+    font-weight: 600;
+}
+
+.src-badge.active {
+    background: #dcfce7;
+    color: #16a34a;
+}
+
+.src-badge.inactive {
+    background: #fee2e2;
+    color: #dc2626;
+}
+
+/* ACTION ICONS (NEON STYLE) */
+.src-action-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+/* base icon */
+.neo-icon-btn {
+    cursor: pointer;
+    padding: 8px;
+    border: none;
+    background: none;
+    border-radius: 12px;
+    transition: transform .25s ease, box-shadow .25s ease, color .25s ease;
+}
+
+/* svg icon */
+.neo-icon {
+    width: 20px;
+    height: 20px;
+    stroke-width: 2.4;
+    stroke: currentColor;
+    fill: none;
+    transition: filter .25s ease;
+}
+
+/* hover glow */
+.neo-icon-btn:hover {
+    transform: translateY(-2px) scale(1.12);
+    color: #a855f7;
+
+    box-shadow:
+            0 0 14px rgba(59,130,246,0.45),
+            0 0 14px rgba(168,85,247,0.45);
+}
+
+/* delete color */
+.neo-icon-btn.delete {
+    color: #ef4444;
+}
+
+/* edit color */
+.neo-icon-btn.edit {
+    color: #facc15;
+}
+
+/* RESPONSIVE */
+@media (max-width: 640px) {
+    .src-table thead { display: none; }
+
+    .src-table tbody tr {
+        display: block;
+        margin-bottom: 16px;
+        background: white;
+        padding: 14px;
+        border-radius: 14px;
+        box-shadow:
+                0 2px 8px rgba(0,0,0,0.06),
+                0 1px 3px rgba(0,0,0,0.08);
+    }
+
+    .src-table tbody td {
+        display: flex;
+        justify-content: space-between;
+        padding: 10px 6px;
+        border-bottom: 1px solid rgba(226,232,240,0.6);
+    }
+
+    .src-table tbody tr td:last-child {
+        border-bottom: none;
+    }
+
+    .src-action-row {
+        justify-content: flex-end;
+    }
+}
