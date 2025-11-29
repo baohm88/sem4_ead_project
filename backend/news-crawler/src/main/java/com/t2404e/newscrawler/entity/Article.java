@@ -13,11 +13,10 @@ import java.time.LocalDateTime;
         indexes = {
                 @Index(columnList = "url"),
                 @Index(columnList = "status"),
-                @Index(columnList = "category_id"),  // Sửa lại ở đây
-                @Index(columnList = "source_id")     // Thêm nếu cần
+                @Index(columnList = "category_id"),
+                @Index(columnList = "source_id")
         }
 )
-
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -26,10 +25,10 @@ public class Article {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;  // Dễ quản lý, không lock bằng URL
+    private Long id;
 
     @Column(nullable = false, unique = true, length = 512)
-    private String url; // Mỗi bài có 1 URL duy nhất
+    private String url;
 
     @Column(nullable = true, unique = false, length = 255)
     private String slug;
@@ -37,24 +36,24 @@ public class Article {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "category_id", nullable = false)
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-    private Category articleCategory; // Thuộc category nào (Thể thao,...)
+    private Category articleCategory;
 
-    // Thuộc nguồn báo nào? (VNExpress, Dân Trí...)
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "source_id", nullable = false)
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     private Source source;
 
     private String title;
-    private String description;
 
     @Column(columnDefinition = "TEXT")
-    private String content;     // Nội dung crawl
+    private String description;   // ✔ FIX: cho phép mô tả dài
 
-    @Column(name = "image_url")
-    private String imageUrl;    // Ảnh thumbnail
+    @Column(columnDefinition = "MEDIUMTEXT")
+    private String content;       // Nội dung crawl
 
-    // Trạng thái bài viết: NEW -> CRAWLED -> ERROR -> APPROVED?
+    @Column(name = "image_url", length = 1024)
+    private String imageUrl;      // ✔ FIX: URL có thể dài
+
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, length = 20)
     private ArticleStatus status;
@@ -63,8 +62,8 @@ public class Article {
     private int retryCount;
 
     @CreationTimestamp
-    private LocalDateTime createdAt; // Khi URL được thêm vào
+    private LocalDateTime createdAt;
 
     @UpdateTimestamp
-    private LocalDateTime updatedAt; // Khi crawl nội dung
+    private LocalDateTime updatedAt;
 }

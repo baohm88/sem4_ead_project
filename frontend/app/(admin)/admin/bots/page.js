@@ -43,37 +43,37 @@ export default function BotControlPage() {
     loadStatuses();
   }, []);
 
-  const handleRunBot = async (botCode) => {
-    setLoadingBot(botCode);
-    pushLog(`>>> Gọi ${botCode.toUpperCase()}...`);
+    const handleRunBot = async (botCode) => {
+        setLoadingBot(botCode);
+        pushLog(`>>> Gọi ${botCode.toUpperCase()}...`);
 
-    try {
-      const res = await runBot(botCode);
-      console.log("RUN BOT: ", res);
+        try {
+            const res = await runBot(botCode);
+            console.log("RUN BOT: ", res);
 
-      const { success, message, data } = res;
+            const { success, message, data } = res;
 
-      if (success) {
-        pushLog(`✅ ${data || `${botCode.toUpperCase()} started`}`);
-        if (data?.lastAffected != null) {
-          pushLog(
-            `   → Affected: ${data.lastAffected}, time: ${
-              data.lastDurationMs ?? "N/A"
-            } ms`
-          );
+            if (success) {
+                pushLog(`✅ ${message}`);
+                if (data?.lastAffected != null) {
+                    pushLog(
+                        `   → Affected: ${data.lastAffected}, time: ${
+                            data.lastDurationMs ?? "N/A"
+                        } ms`
+                    );
+                }
+            } else {
+                pushLog(`❌ ${message || `${botCode.toUpperCase()} chạy lỗi`}`);
+            }
+
+            await loadStatuses();
+        } catch (err) {
+            console.error(err);
+            pushLog(`❌ Call ${botCode.toUpperCase()} lỗi: ${err}`);
+        } finally {
+            setLoadingBot(null);
         }
-      } else {
-        pushLog(`❌ ${message || `${botCode.toUpperCase()} chạy lỗi`}`);
-      }
-
-      await loadStatuses();
-    } catch (err) {
-      console.error(err);
-      pushLog(`❌ Call ${botCode.toUpperCase()} lỗi: ${err}`);
-    } finally {
-      setLoadingBot(null);
-    }
-  };
+    };
 
   return (
     <div className="p-6 space-y-4">
