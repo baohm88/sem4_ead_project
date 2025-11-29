@@ -10,6 +10,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
 import java.text.Normalizer;
 import java.util.List;
 
@@ -59,7 +60,7 @@ public class ArticleService {
     }
 
     public Page<Article> search(String keyword, Pageable pageable) {
-        if(keyword == null || keyword.isBlank()) {
+        if (keyword == null || keyword.isBlank()) {
             return articleRepository.findAll(pageable);
         }
         return articleRepository.search(keyword, pageable);
@@ -91,83 +92,50 @@ public class ArticleService {
                 .build();
     }
 
-//public PageResponse<Article> getCrawledArticles(
-//        int page,
-//        int size,
-//        String keyword,
-//        String sortBy,
-//        String direction,
-//        Long categoryId
-//) {
-//    Sort sort = direction.equalsIgnoreCase("ASC")
-//            ? Sort.by(sortBy).ascending()
-//            : Sort.by(sortBy).descending();
-//
-//    Pageable pageable = PageRequest.of(page, size, sort);
-//
-//    Page<Article> articlePage;
-//    if (keyword == null || keyword.isBlank()) {
-//        articlePage = articleRepository.findAll(pageable);
-//    } else {
-//        articlePage = articleRepository.search(keyword, pageable);
-//    }
-//
-//    var filtered = articlePage
-//            .getContent()
-//            .stream()
-//            .filter(a -> a.getStatus() == ArticleStatus.CRAWLED)
-//            .filter(a -> categoryId == null ||
-//                    (a.getArticleCategory() != null
-//                            && a.getArticleCategory().getId().equals(categoryId)))
-//            .toList();
-//
-//    return PageResponse.<Article>builder()
-//            .content(filtered)
-//            .currentPage(articlePage.getNumber())
-//            .pageSize(articlePage.getSize())
-//            .totalPages(articlePage.getTotalPages())
-//            .totalElements(articlePage.getTotalElements())
-//            .keyword(keyword)
-//            .sortBy(sortBy)
-//            .direction(direction)
-//            .build();
-//}
-public PageResponse<Article> getCrawledArticles(
-        int page,
-        int size,
-        String keyword,
-        String sortBy,
-        String direction,
-        Long categoryId
-) {
-    Sort sort = direction.equalsIgnoreCase("DESC")
-            ? Sort.by(sortBy).descending()
-            : Sort.by(sortBy).ascending();
+    public PageResponse<Article> getCrawledArticles(
+            int page,
+            int size,
+            String keyword,
+            String sortBy,
+            String direction,
+            Long categoryId
+    ) {
+        Sort sort = direction.equalsIgnoreCase("DESC")
+                ? Sort.by(sortBy).descending()
+                : Sort.by(sortBy).ascending();
 
-    Pageable pageable = PageRequest.of(page, size, sort);
+        Pageable pageable = PageRequest.of(page, size, sort);
 
-    Page<Article> result;
+        Page<Article> result;
 
-    if (categoryId != null) {
-        result = articleRepository.findByStatusAndCategory(
-                ArticleStatus.CRAWLED, categoryId, keyword, pageable
+        if (categoryId != null) {
+            result = articleRepository.findByStatusAndCategory(
+                    ArticleStatus.CRAWLED, categoryId, keyword, pageable
+            );
+        } else {
+            result = articleRepository.findCrawled(keyword, pageable);
+        }
+
+        return new PageResponse<>(
+                result.getContent(),        // 🔥 PHẢI LẤY CONTENT
+                result.getNumber(),
+                result.getSize(),
+                result.getTotalPages(),
+                result.getTotalElements(),
+                keyword,
+                sortBy,
+                direction
         );
-    } else {
-        result = articleRepository.findCrawled(keyword, pageable);
     }
 
-    return new PageResponse<>(
-            result.getContent(),        // 🔥 PHẢI LẤY CONTENT
-            result.getNumber(),
-            result.getSize(),
-            result.getTotalPages(),
-            result.getTotalElements(),
-            keyword,
-            sortBy,
-            direction
-    );
-}
     public void delete(Long id) {
         articleRepository.deleteById(id);
     }
+
+    public Article getPublicArticleBySlug(String slug) {
+        return articleRepository.findBySlugAndStatus(slug, ArticleStatus.CRAWLED)
+                .orElseThrow(() ->
+                        new RuntimeException("Article not found or not CRAWLED"));
+    }
+
 }

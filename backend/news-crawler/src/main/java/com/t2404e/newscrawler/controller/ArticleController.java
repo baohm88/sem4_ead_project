@@ -1,6 +1,7 @@
 package com.t2404e.newscrawler.controller;
 
 import com.t2404e.newscrawler.dto.ApiResponse;
+import com.t2404e.newscrawler.dto.ArticleDetailDTO;
 import com.t2404e.newscrawler.dto.ErrorResponse;
 import com.t2404e.newscrawler.dto.PageResponse;
 import com.t2404e.newscrawler.entity.Article;
@@ -56,6 +57,29 @@ public class ArticleController {
         return ApiResponse.success(
                 articleService.getCrawledArticles(page, size, keyword, sortBy, direction, categoryId)
         );
+    }
+
+    // 🔥 SEO-friendly article detail API
+    @GetMapping("/public/{slug}")
+    public ApiResponse<ArticleDetailDTO> getPublicBySlug(@PathVariable String slug) {
+
+        Article a = articleService.getPublicArticleBySlug(slug);
+
+        ArticleDetailDTO dto = ArticleDetailDTO.builder()
+                .id(a.getId())
+                .title(a.getTitle())
+                .slug(a.getSlug())
+                .description(a.getDescription())
+                .content(a.getContent())
+                .imageUrl(a.getImageUrl())
+
+                .categoryName(a.getArticleCategory().getName())
+                .sourceName(a.getSource().getTitle())
+
+                .createdAt(a.getCreatedAt())
+                .build();
+
+        return ApiResponse.success(dto);
     }
 
     // ===================== GET ONE ==============================
