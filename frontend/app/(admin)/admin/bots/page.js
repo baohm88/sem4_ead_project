@@ -32,8 +32,7 @@ export default function BotControlPage() {
   const loadStatuses = async () => {
     try {
       const res = await fetchBotStatuses();
-      // axios: res.data = ApiResponse
-      setStatuses(res || []);
+      setStatuses(res?.data || []);
     } catch (err) {
       console.error(err);
       pushLog("⚠ Lỗi load BOT status từ server.");
@@ -50,10 +49,12 @@ export default function BotControlPage() {
 
     try {
       const res = await runBot(botCode);
-      const { success, message, data } = res.data;
+      console.log("RUN BOT: ", res);
+
+      const { success, message, data } = res;
 
       if (success) {
-        pushLog(`✅ ${message || `${botCode.toUpperCase()} chạy OK`}`);
+        pushLog(`✅ ${data || `${botCode.toUpperCase()} started`}`);
         if (data?.lastAffected != null) {
           pushLog(
             `   → Affected: ${data.lastAffected}, time: ${
@@ -68,7 +69,7 @@ export default function BotControlPage() {
       await loadStatuses();
     } catch (err) {
       console.error(err);
-      pushLog(`❌ Call ${botCode.toUpperCase()} lỗi: ${err.message}`);
+      pushLog(`❌ Call ${botCode.toUpperCase()} lỗi: ${err}`);
     } finally {
       setLoadingBot(null);
     }
@@ -153,9 +154,7 @@ export default function BotControlPage() {
                     <tr key={s.code} className="border-t">
                       <td className="px-3 py-2 font-semibold">
                         {s.code}{" "}
-                        <span className="text-xs text-gray-500">
-                          {s.name}
-                        </span>
+                        <span className="text-xs text-gray-500">{s.name}</span>
                       </td>
                       <td className="px-3 py-2 text-gray-700">
                         {s.lastMessage}

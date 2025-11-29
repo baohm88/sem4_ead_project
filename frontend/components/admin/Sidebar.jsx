@@ -13,7 +13,7 @@ import {
     MdChevronLeft,
     MdChevronRight,
     MdBallot, MdArticle, MdSource,
-
+    MdOutlineFlutterDash
 } from "react-icons/md";
 
 // 1. NHẬN PROPS TỪ CHA (AdminLayout)
@@ -31,6 +31,7 @@ export default function Sidebar({ collapsed, setCollapsed }) {
     { name: "Categories", href: "/admin/categories", icon: MdCategory },
     { name: "Sources", href: "/admin/sources", icon: MdSource },
     { name: "Articles", href: "/admin/articles/list", icon: MdArticle },
+    { name: "Bots", href: "/admin/bots", icon:  MdOutlineFlutterDash},
     { name: "Client", href: "/", icon: MdBallot },
   ];
 

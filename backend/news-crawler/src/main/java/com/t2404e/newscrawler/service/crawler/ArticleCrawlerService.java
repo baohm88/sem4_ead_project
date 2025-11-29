@@ -102,7 +102,6 @@ import java.util.List;
 //    }
 //}
 
-
 // BOT kéo 10 articles 1
 @Service
 @RequiredArgsConstructor
@@ -181,4 +180,3 @@ public class ArticleCrawlerService {
                 .replaceAll("[^a-zA-Z0-9-]", "");
     }
 }
-
