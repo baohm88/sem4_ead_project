@@ -1,24 +1,23 @@
+// frontend/services/api.js
 import axios from "axios";
 
-const API_BASE = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8080/api/v1";
+const API_BASE =
+    process.env.NEXT_PUBLIC_API_URL || "http://localhost:8080/api/v1";
 
-// 👇 Tạo instance axios
 export const api = axios.create({
-  baseURL: API_BASE,
-  timeout: 60000, // 10s tránh treo UI
+    baseURL: API_BASE,
+    timeout: 60000,
 });
 
-// 👇 Response Interceptor: luôn trả về response.data.data
 api.interceptors.response.use(
-  (response) => {
-    // API dạng {success, message, data}
-    if (response?.data !== undefined) return response.data;
-    return response;
-  },
-  (error) => {
-    console.error("❌ API Error:", error.response || error.message);
-    return Promise.reject(
-      error.response?.data?.message || "Request failed"
-    );
-  }
+    (response) => {
+        return response.data; // luôn trả {success, message, data}
+    },
+    (error) => {
+        console.error("❌ API Error:", error.response || error.message);
+
+        return Promise.reject(
+            error.response?.data?.message || error.message || "Request failed"
+        );
+    }
 );

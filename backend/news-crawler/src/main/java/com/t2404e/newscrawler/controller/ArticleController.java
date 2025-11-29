@@ -113,6 +113,7 @@ public class ArticleController {
     }
 
     // ===================== ERROR HELPERS ==========================
+
     private ResponseEntity<ErrorResponse> errorNotFound(String msg) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND)
                 .body(ErrorResponse.builder()

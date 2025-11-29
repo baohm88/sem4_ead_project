@@ -1,27 +1,30 @@
 import { api } from "./api";
 
-<<<<<<< HEAD
-// 🔥 ADMIN lấy tất cả (NEW + ERROR + CRAWLED)
+// 🔥 ADMIN – lấy ALL (NEW + ERROR + CRAWLED)
 export const getAllArticles = async (
-  page = 0,
-  size = 5,
-  keyword = "",
-  sortBy = "createdAt",
-  direction = "DESC"
+    page = 0,
+    size = 10,
+    keyword = "",
+    sortBy = "createdAt",
+    direction = "DESC"
 ) => {
-  const res = await api.get(
-    `/articles/public?page=${page}&size=${size}&keyword=${keyword}&sortBy=${sortBy}&direction=${direction}`
-  );
-  console.log("ARTICLES: ", res);
-  return res;
+    return api.get(
+        `/articles/admin?page=${page}&size=${size}&keyword=${keyword}&sortBy=${sortBy}&direction=${direction}`
+    );
 };
 
-// ❌ DELETE Article
-export const deleteArticle = (id) => api.delete(`/articles/${id}`);
-=======
-// GET tất cả articles
-export const fetchArticles = () => api.get("/articles");
+// CLIENT – chỉ lấy CRAWLED
+export const getPublicArticles = async (
+    page = 0,
+    size = 5,
+    keyword = "",
+    sortBy = "createdAt",
+    direction = "DESC"
+) => {
+    return api.get(
+        `/articles/public?page=${page}&size=${size}&keyword=${keyword}&sortBy=${sortBy}&direction=${direction}`
+    );
+};
 
-// Xoá article theo ID
+// DELETE
 export const deleteArticle = (id) => api.delete(`/articles/${id}`);
->>>>>>> a0f74f5 (temp chagnes before pulling)
