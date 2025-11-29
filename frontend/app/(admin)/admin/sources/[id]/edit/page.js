@@ -12,8 +12,8 @@ export default function EditSourcePage() {
     const [source, setSource] = useState(null);
 
     useEffect(() => {
-        getSources().then((list) => {
-            const found = list.find((s) => String(s.id) === String(id));
+        getSources().then((res) => {
+            const found = res.data.find((s) => String(s.id) === String(id));
             setSource(found);
         });
     }, [id]);

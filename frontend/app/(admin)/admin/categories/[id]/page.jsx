@@ -54,8 +54,9 @@ export default function ViewCategoryPage() {
   useEffect(() => {
     (async () => {
       try {
-        const fetchedCategory = await getCategoryById(id);
-        setCategory(fetchedCategory);
+        const res = await getCategoryById(id);
+
+        setCategory(res.data);
       } catch {
         setCategory(null);
       } finally {
@@ -136,23 +137,23 @@ export default function ViewCategoryPage() {
             <span className="cv-value">{category.name}</span>
           </div>
 
-          <div className="cv-row">
-            <span className="cv-label">Ngày tạo</span>
-            <span className="cv-value">
-              {category.createdAt
-                ? new Date(category.createdAt).toLocaleString()
-                : "--"}
-            </span>
-          </div>
+          {/*<div className="cv-row">*/}
+          {/*  <span className="cv-label">Ngày tạo</span>*/}
+          {/*  <span className="cv-value">*/}
+          {/*    {category.createdAt*/}
+          {/*      ? new Date(category.createdAt).toLocaleString()*/}
+          {/*      : "--"}*/}
+          {/*  </span>*/}
+          {/*</div>*/}
 
-          <div className="cv-row">
-            <span className="cv-label">Cập nhật cuối</span>
-            <span className="cv-value">
-              {category.updatedAt
-                ? new Date(category.updatedAt).toLocaleString()
-                : "--"}
-            </span>
-          </div>
+          {/*<div className="cv-row">*/}
+          {/*  <span className="cv-label">Cập nhật cuối</span>*/}
+          {/*  <span className="cv-value">*/}
+          {/*    {category.updatedAt*/}
+          {/*      ? new Date(category.updatedAt).toLocaleString()*/}
+          {/*      : "--"}*/}
+          {/*  </span>*/}
+          {/*</div>*/}
         </div>
       </Card>
 

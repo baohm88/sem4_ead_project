@@ -13,8 +13,8 @@ export default function SourcesPage() {
     const router = useRouter();
 
     const load = async () => {
-        const data = await getSources();
-        setSources(data);
+        const res = await getSources();
+        setSources(res.data);
     };
     const IconEdit = () => (
         <svg className="neo-icon" viewBox="0 0 24 24">
