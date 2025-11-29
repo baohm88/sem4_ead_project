@@ -2,9 +2,8 @@ import Link from "next/link";
 import { getPublicArticles } from "@/services/articleApi";
 
 export default async function HomePage() {
-    // 🔥 Gọi API public articles
+    // Gọi API public articles
     const res = await getPublicArticles(0, 20);
-    console.log("public articles", res);
     const raw = res?.data?.content || [];
 
     // 🔄 Convert sang format FE đang dùng

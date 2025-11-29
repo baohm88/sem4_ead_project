@@ -7,6 +7,7 @@ import com.t2404e.newscrawler.entity.Category;
 import com.t2404e.newscrawler.repository.CategoryRepository;
 import com.t2404e.newscrawler.repository.ArticleRepository;
 
+import com.t2404e.newscrawler.service.CategoryService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,10 +24,12 @@ public class CategoryController {
 
     private final CategoryRepository categoryRepo;
     private final ArticleRepository articleRepo;
+    private final CategoryService categoryService;
 
     public CategoryController(CategoryRepository categoryRepo, ArticleRepository articleRepo) {
         this.categoryRepo = categoryRepo;
         this.articleRepo = articleRepo;
+        this.categoryService = new CategoryService(categoryRepo, articleRepo);
     }
 
     // ===================== GET ALL ==============================
@@ -39,6 +42,13 @@ public class CategoryController {
                         .message("Lấy danh sách category thành công")
                         .data(list)
                         .build()
+        );
+    }
+
+    @GetMapping("/public")
+    public ApiResponse<List<Category>> getPublicCategories() {
+        return ApiResponse.success(
+                categoryService.getPublicCategories()
         );
     }
 

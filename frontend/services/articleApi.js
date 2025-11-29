@@ -49,13 +49,7 @@ export const getPublicArticles = async (
 // DELETE
 export const deleteArticle = (id) => api.delete(`/articles/${id}`);
 
-// 🔥 Tìm article theo slug (SSR)
-export const getArticleBySlug = async (slug) => {
-    return api.get("/articles/public", {
-        params: {
-            page: 0,
-            size: 1,
-            keyword: slug
-        }
-    });
+// Tìm article theo slug (SSR)
+export const getPublicArticleBySlug = async (slug) => {
+    return api.get(`/articles/public/${slug}`);
 };

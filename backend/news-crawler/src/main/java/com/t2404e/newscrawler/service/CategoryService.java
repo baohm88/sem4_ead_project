@@ -24,4 +24,8 @@ public class CategoryService {
     public int countArticles(Long categoryId) {
         return articleRepo.countByArticleCategory_Id(categoryId);
     }
+
+    public List<Category> getPublicCategories() {
+        return categoryRepo.findCategoriesWithCrawledArticles();
+    }
 }
